@@ -4,9 +4,6 @@ import React from "react";
 import Image from "next/image";
 import { Reveal, HoverCard } from "../components/Reveal";
 
-
-
-
 const EVENT = {
   title: "チバビアフェスト",
   catch: "ALL YOU NEED IS BEER!",
@@ -535,11 +532,22 @@ export default function Page() {
                 <div className="text-sm font-semibold">出店ブルワリー（順不同）</div>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {BREWERIES.map((b) => (
-                    <div key={b.name} className="rounded-2xl border border-gray-200 bg-white px-4 py-3">
-                      <div className="text-sm font-semibold">{b.name}</div>
-                      <div className="mt-1 text-xs text-gray-500">{b.area}</div>
-                    </div>
-                  ))}
+  <div key={b.name} className="rounded-2xl border border-gray-200 bg-white px-4 py-3">
+    <div className="text-sm font-semibold">{b.name}</div>
+    <div className="mt-1 text-xs text-gray-500">{b.area}</div>
+
+    {b.days && (
+      <div
+        className={
+          "mt-2 text-[11px] font-semibold " +
+          (b.days === "両日" ? "text-gray-500" : "text-red-600")
+        }
+      >
+        {b.days === "両日" ? "両日出店" : `※${b.days}`}
+      </div>
+    )}
+  </div>
+))}
                 </div>
               </div>
             </SoftCard>
@@ -566,19 +574,30 @@ export default function Page() {
               <div className="p-7">
                 <div className="text-sm font-semibold">出店フード</div>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {FOODS.map((f) => (
-                    <div key={f.name} className="rounded-2xl border border-gray-200 bg-white px-4 py-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="text-sm font-semibold">{f.name}</div>
-                        {f.kind ? (
-                          <span className="rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[11px] font-semibold text-gray-600">
-                            {f.kind}
-                          </span>
-                        ) : null}
-                      </div>
-                      <div className="mt-1 text-xs text-gray-500">{f.menu}</div>
-                    </div>
-                  ))}
+{FOODS.map((f) => (
+  <div key={f.name} className="rounded-2xl border border-gray-200 bg-white px-4 py-3">
+    <div className="flex items-center justify-between gap-3">
+      <div className="text-sm font-semibold">{f.name}</div>
+      {f.kind ? (
+        <span className="rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[11px] font-semibold text-gray-600">
+          {f.kind}
+        </span>
+      ) : null}
+    </div>
+    <div className="mt-1 text-xs text-gray-500">{f.menu}</div>
+
+    {f.days && (
+      <div
+        className={
+          "mt-2 text-[11px] font-semibold " +
+          (f.days === "両日" ? "text-gray-500" : "text-red-600")
+        }
+      >
+        {f.days === "両日" ? "両日出店" : `※${f.days}`}
+      </div>
+    )}
+  </div>
+))}
                 </div>
               </div>
             </SoftCard>
