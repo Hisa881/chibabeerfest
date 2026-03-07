@@ -5,8 +5,7 @@ import Image from "next/image";
 import { Reveal, HoverCard } from "../components/Reveal";
 
 
-type Brewery = { name: string; area: string };
-type Food = { name: string; menu: string; kind?: "キッチンカー" | "テント" };
+
 
 const EVENT = {
   title: "チバビアフェスト",
