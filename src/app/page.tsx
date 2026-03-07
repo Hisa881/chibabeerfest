@@ -463,11 +463,11 @@ export default function Page() {
               {
                 title: "多彩なクラフトビール",
                 desc: "千葉県内外からブルワリーが集結。ブルワーと交流しながら味わう一杯は格別。",
-                img: "/images/brewery.jpg",
+                img: "/images/brewery.png",
               },
               {
                 title: "千葉ならではの海辺",
-                desc: "海風の吹き抜ける開放的な空間。芝生の上でゆったり乾杯。",
+                desc: "海風の吹き抜ける開放的な空間。芝生の上でゆったり乾杯。           ",
                 img: "/images/sanbashi.png",
               },
               {
