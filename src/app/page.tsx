@@ -35,40 +35,56 @@ const HERO_IMAGES = [
   { src: "/images/hero_1.png", alt: "HERO1" },
 ];
 
+type Brewery = {
+  name: string;
+  area: string;
+  days?: "両日" | "4/25(土)のみ" | "4/26(日)のみ";
+};
+
 const BREWERIES: Brewery[] = [
-  { name: "潮風ブルーラボ", area: "千葉県千葉市" },
-  { name: "幕張ブルワリー", area: "千葉県千葉市" },
-  { name: "海岸醸造", area: "千葉県南房総市" },
-  { name: "Y.Y.G Brewery Factory", area: "千葉県千葉市" },
-  { name: "寒菊ブルワリー", area: "千葉県山武市" },
-  { name: "", area: "" },
-  { name: "RIO BREWING & CO.", area: "千葉県柏市" },
-  { name: "うしとらブルワリー", area: "栃木県下野市" },
-  { name: "秩父麦酒", area: "埼玉県秩父市" },
-  { name: "G-BRAND “Bespoke” BEERERS", area: "東京都" },
-  { name: "U.B.P Brewery", area: "埼玉県さいたま市" },
-  { name: "いなびや / 千葉稲毛ビール醸造所", area: "千葉県千葉市稲毛区" },
-  { name: "おたこビール", area: "千葉県千葉市" },
-  { name: "SONGBIRD BEER", area: "千葉県木更津市" },
-  { name: "Fuller’s London Pride", area: "UK" },
+  { name: "潮風ブルーラボ", area: "千葉県千葉市", days: "両日" },
+  { name: "秩父麦酒", area: "埼玉県秩父市", days: "両日" },
+  { name: "G-BRAND \"Bespoke\" BEERERS", area: "東京都", days: "両日" },
+  { name: "RIO BREWING & CO.", area: "千葉県柏市", days: "両日" },
+  { name: "Nori's BEER", area: "山梨県西八代郡市", days: "両日" },
+  { name: "FARMENTRY", area: "奈良県橿原市", days: "両日" },
+  { name: "おたこビール", area: "千葉県千葉市", days: "両日" },
+  { name: "Twin Peaks Mountain Brewing", area: "", days: "両日" },
+  { name: "U.B.P Brewery", area: "埼玉県さいたま市", days: "両日" },
+  { name: "八ヶ岳ビール タッチダウン", area: "山梨県北杜市", days: "両日" },
+  { name: "Bighand Bros. Beer", area: "京都府京都市", days: "両日" },
+  { name: "SONGBIRD", area: "千葉県木更津市", days: "両日" },
+  { name: "FULLER'S", area: "UK", days: "両日" },
+  { name: "千葉稲毛ビール いなびや", area: "千葉県千葉市稲毛区", days: "両日" },
+  { name: "T.Y. HARBOR Brewery", area: "", days: "両日" },
+  { name: "ハーヴェスト・ムーン ブルワリー", area: "千葉県浦安市", days: "両日" },
+  { name: "寒菊", area: "千葉県山武市", days: "両日" },
+  { name: "うしとら", area: "栃木県下野市", days: "両日" },
+  { name: "AQ", area: "東京都", days: "両日" },
+  { name: "海岸醸造", area: "千葉県南房総市", days: "両日" },
 ];
 
+type Food = {
+  name: string;
+  menu: string;
+  kind?: "キッチンカー" | "テント";
+  days?: "両日" | "4/25(土)のみ" | "4/26(日)のみ";
+};
+
 const FOODS: Food[] = [
-  { kind: "キッチンカー", name: "カレー屋リリー", menu: "カレー" },
-  { kind: "キッチンカー", name: "SHUNGOROU SAUSAGE", menu: "自家製ソーセージ" },
-  { kind: "キッチンカー", name: "もくしち", menu: "餃子" },
-  { kind: "キッチンカー", name: "蛸八", menu: "たこ焼き" },
-  { kind: "キッチンカー", name: "NORA", menu: "チャーシュー丼" },
-  { kind: "キッチンカー", name: "ISLAND KITCHEN", menu: "ジャークチキン" },
-  { kind: "キッチンカー", name: "おだやかのむこう", menu: "焼き芋" },
-  { kind: "キッチンカー", name: "Hawaian Kitchen aoakua", menu: "ロコモコ丼" },
-  { kind: "キッチンカー", name: "MoiMoi", menu: "ピタパンサンド" },
-  { kind: "キッチンカー", name: "BAZIO", menu: "アジアンフード" },
-  { kind: "キッチンカー", name: "東京豚足ジプシー", menu: "豚足" },
-  { kind: "テント", name: "WAPIZZA", menu: "ワッフル風ピザ" },
-  { kind: "テント", name: "もぢょい有限会社", menu: "焼き鳥" },
-  { kind: "テント", name: "オフィスアワー", menu: "ラップサンド" },
-  { kind: "テント", name: "きまぐれカフェ clover", menu: "唐揚げ" },
+  { kind: "キッチンカー", name: "おだやかのむこう", menu: "焼き芋", days: "両日" },
+  { kind: "キッチンカー", name: "おだやかのむこう2号", menu: "フリッツポテト", days: "両日" },
+  { kind: "キッチンカー", name: "SHUNGOROU SAUSAGE", menu: "ホットドッグ", days: "両日" },
+  { kind: "キッチンカー", name: "蛸八", menu: "たこ焼き", days: "4/25(土)のみ" },
+  { kind: "キッチンカー", name: "ISLAND KITCHEN", menu: "ジャークチキン", days: "両日" },
+  { kind: "キッチンカー", name: "Hawaian Kitchen aoakua", menu: "ロコモコ丼", days: "両日" },
+  { kind: "キッチンカー", name: "MoiMoi", menu: "ピタパンサンド", days: "両日" },
+  { kind: "キッチンカー", name: "カレー屋リリー", menu: "本格タイ風カレー", days: "両日" },
+  { kind: "キッチンカー", name: "もくしち", menu: "餃子", days: "4/26(日)のみ" },
+  { kind: "キッチンカー", name: "CLUSTER", menu: "唐揚げ", days: "両日" },
+
+  { kind: "テント", name: "もぢょい有限会社", menu: "焼き鳥", days: "4/26(日)のみ" },
+  { kind: "テント", name: "entacos", menu: "タコス", days: "両日" },
 ];
 
 const FAQ = [
