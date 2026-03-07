@@ -473,7 +473,7 @@ export default function Page() {
               {
                 title: "ビールにぴったりフード",
                 desc: "キッチンカー＆テント出店。食べ合わせも楽しめるラインナップ。",
-                img: "/images/food.jpg",
+                img: "/images/food.png",
               },
               {
                 title: "シールラリー特典",
@@ -510,7 +510,7 @@ export default function Page() {
             <SoftCard className="mt-10 overflow-hidden">
               <div className="relative w-full aspect-square bg-gray-50 p-6">
   <Image
-    src="/images/brewery_all.jpg"
+    src="/images/brewery_all.png"
     alt="出店ブルワリー"
     fill
     className="object-contain"
@@ -541,7 +541,7 @@ export default function Page() {
             <SoftCard className="mt-10 overflow-hidden">
               <div className="relative w-full bg-white">
   <Image
-    src="/images/food.jpg"
+    src="/images/food_all.png"
     alt="フード出店"
     width={800}
     height={1200}
