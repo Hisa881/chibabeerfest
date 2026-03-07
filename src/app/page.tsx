@@ -33,7 +33,6 @@ const EVENT = {
 
 const HERO_IMAGES = [
   { src: "/images/hero_1.png", alt: "HERO1" },
-  { src: "/images/hero3.png", alt: "HERO2" },
 ];
 
 const BREWERIES: Brewery[] = [
@@ -464,7 +463,7 @@ export default function Page() {
               {
                 title: "多彩なクラフトビール",
                 desc: "千葉県内外からブルワリーが集結。ブルワーと交流しながら味わう一杯は格別。",
-                img: "/images/brewery_all.jpg",
+                img: "/images/brewery.jpg",
               },
               {
                 title: "千葉ならではの海辺",
