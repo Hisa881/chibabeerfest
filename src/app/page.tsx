@@ -285,7 +285,7 @@ function AnchorRow() {
 
 export default function Page() {
   return (
-    <main className="relative bg-white text-neutral-900">
+    <main className="relative bg-gradient-to-b from-[#fffaf0] via-[#fff1c9] to-[#fde6a6] text-neutral-900">
   {/* うっすらフェスっぽい光（白背景維持） */}
   <div className="pointer-events-none absolute inset-0">
     <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-amber-200/35 blur-3xl" />
