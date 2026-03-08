@@ -20,7 +20,7 @@ const EVENT = {
   organizer: "チバビアフェスト実行委員会",
   /* sponsors: [""], */
   /* partners: [""], */
-  /* contactName: "幸野 茜（Akane Kono）", */
+  /* contactName: "Akane Kono", */
   /* contactMail: "chiba.beerfest@gmail.com", */
   instagram: "https://www.instagram.com/chibabeerfest/",
   instagramHandle: "@chibabeerfest",
@@ -843,13 +843,13 @@ export default function Page() {
     </div>
 
     <Reveal delay={0.12}>
-      <div className="mt-10 mx-auto max-w-2xl text-left">
-        <SoftCard className="p-7">
-          <div className="text-sm font-semibold">
+   	 <div className="mt-10 max-w-3xl mx-auto">
+          <SoftCard className="p-8 text-center">
+           <div className="text-lg font-semibold">
             運営情報
-          </div>
+           </div>
 
-          <dl className="mt-4 grid gap-3 text-sm">
+          <div className="text-lg font-semibold">
             <div>
               <dt className="text-gray-500">主催</dt>
               <dd className="mt-1 font-semibold">
