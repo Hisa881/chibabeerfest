@@ -818,14 +818,14 @@ export default function Page() {
       center
     />
 
-    <div className="mt-10 max-w-3xl mx-auto">
+    <div className="mt-10 mx-auto max-w-3xl space-y-6">
       <Reveal>
-        <SoftCard className="p-8 text-center">
-          <div className="text-lg font-semibold">
+        <SoftCard className="p-8 sm:p-10 text-center min-h-[220px] flex flex-col items-center justify-center">
+          <div className="text-2xl font-semibold">
             お問い合わせフォーム
           </div>
 
-          <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+          <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed max-w-xl">
             出店・協賛・取材・来場に関するお問い合わせは、
             専用フォームよりお送りください。
           </p>
@@ -834,32 +834,30 @@ export default function Page() {
             href="https://forms.gle/ここを実際のGoogleフォームURLに変更"
             target="_blank"
             rel="noreferrer"
-            className="mt-6 inline-flex items-center justify-center rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
+            className="mt-8 inline-flex items-center justify-center rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
           >
             フォームを開く
           </a>
         </SoftCard>
       </Reveal>
+
+      <Reveal delay={0.12}>
+        <SoftCard className="p-8 sm:p-10 text-center min-h-[220px] flex flex-col items-center justify-center">
+          <div className="text-2xl font-semibold">
+            運営情報
+          </div>
+
+          <dl className="mt-6 space-y-2">
+            <div>
+              <dt className="text-sm text-gray-500">主催</dt>
+              <dd className="mt-1 text-lg font-semibold">
+                {EVENT.organizer}
+              </dd>
+            </div>
+          </dl>
+        </SoftCard>
+      </Reveal>
     </div>
-
-    <Reveal delay={0.12}>
-  <div className="mt-10 max-w-3xl mx-auto">
-    <SoftCard className="p-8 text-center">
-      <div className="text-lg font-semibold">
-        運営情報
-      </div>
-
-      <dl className="mt-4">
-        <div>
-          <dt className="text-gray-500">主催</dt>
-          <dd className="mt-1 font-semibold">
-            {EVENT.organizer}
-          </dd>
-        </div>
-      </dl>
-    </SoftCard>
-  </div>
-</Reveal>
   </div>
 </section>
 
