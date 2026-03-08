@@ -843,23 +843,23 @@ export default function Page() {
     </div>
 
     <Reveal delay={0.12}>
-   	 <div className="mt-10 max-w-3xl mx-auto">
-          <SoftCard className="p-8 text-center">
-           <div className="text-lg font-semibold">
-            運営情報
-           </div>
-
-          <div className="text-lg font-semibold">
-            <div>
-              <dt className="text-gray-500">主催</dt>
-              <dd className="mt-1 font-semibold">
-                {EVENT.organizer}
-              </dd>
-            </div>
-          </dl>
-        </SoftCard>
+  <div className="mt-10 max-w-3xl mx-auto">
+    <SoftCard className="p-8 text-center">
+      <div className="text-lg font-semibold">
+        運営情報
       </div>
-    </Reveal>
+
+      <dl className="mt-4">
+        <div>
+          <dt className="text-gray-500">主催</dt>
+          <dd className="mt-1 font-semibold">
+            {EVENT.organizer}
+          </dd>
+        </div>
+      </dl>
+    </SoftCard>
+  </div>
+</Reveal>
   </div>
 </section>
 
