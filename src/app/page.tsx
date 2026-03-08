@@ -22,8 +22,8 @@ const EVENT = {
   /* partners: [""], */
   /* contactName: "幸野 茜（Akane Kono）", */
   /* contactMail: "chiba.beerfest@gmail.com", */
-  /* instagram: "https://www.instagram.com/chibabeerfest/", */
-  /* instagramHandle: "@chibabeerfest", */
+  instagram: "https://www.instagram.com/chibabeerfest/",
+  instagramHandle: "@chibabeerfest",
   // Google Map（必要なら差し替え）
   mapUrl: "https://www.google.com/maps?q=さんばしひろば&hl=ja&z=16",
   mapEmbed: "https://www.google.com/maps?q=%E3%81%95%E3%82%93%E3%81%B0%E3%81%97%E3%81%B2%E3%82%8D%E3%81%B0&output=embed",
