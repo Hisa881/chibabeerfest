@@ -808,10 +808,9 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 参加・問い合わせ */}
+{/* 参加・問い合わせ */}
 <section id="contact" className="py-14 sm:py-20 bg-gray-50">
   <div className="mx-auto max-w-6xl px-6 text-center">
-
     <SectionHeader
       kicker="CONTACT"
       title="参加・問い合わせ"
@@ -819,76 +818,48 @@ export default function Page() {
       center
     />
 
-    <div className="mt-10 grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto">
-
+    <div className="mt-10 max-w-3xl mx-auto">
       <Reveal>
         <SoftCard className="p-8 text-center">
-
           <div className="text-lg font-semibold">
             お問い合わせフォーム
           </div>
 
           <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-            出店・協賛・取材・来場に関するお問い合わせは
+            出店・協賛・取材・来場に関するお問い合わせは、
             専用フォームよりお送りください。
           </p>
 
           <a
-            href="ここにGoogleフォームURL"
+            href="https://forms.gle/ここを実際のGoogleフォームURLに変更"
             target="_blank"
             rel="noreferrer"
             className="mt-6 inline-flex items-center justify-center rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
           >
             フォームを開く
           </a>
-
         </SoftCard>
       </Reveal>
-
-      <Reveal delay={0.06}>
-        <SoftCard className="p-8 text-center">
-
-          <div className="text-lg font-semibold">
-            Instagram
-          </div>
-
-        </SoftCard>
-      </Reveal>
-
     </div>
 
     <Reveal delay={0.12}>
       <div className="mt-10 mx-auto max-w-2xl text-left">
-
         <SoftCard className="p-7">
-
           <div className="text-sm font-semibold">
             運営情報
           </div>
 
-          <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-
+          <dl className="mt-4 grid gap-3 text-sm">
             <div>
               <dt className="text-gray-500">主催</dt>
               <dd className="mt-1 font-semibold">
                 {EVENT.organizer}
               </dd>
             </div>
-
-            <div>
-              <dt className="text-gray-500">担当</dt>
-              <dd className="mt-1 font-semibold">
-                {EVENT.contactName}
-              </dd>
-            </div>
-
           </dl>
-
         </SoftCard>
-
       </div>
     </Reveal>
-
   </div>
 </section>
 
