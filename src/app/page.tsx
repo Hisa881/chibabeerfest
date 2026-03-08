@@ -20,10 +20,10 @@ const EVENT = {
   organizer: "チバビアフェスト実行委員会",
   /* sponsors: [""], */
   /* partners: [""], */
-  contactName: "幸野 茜（Akane Kono）",
-  contactMail: "chiba.beerfest@gmail.com",
-  instagram: "https://www.instagram.com/chibabeerfest/",
-  instagramHandle: "@chibabeerfest",
+  /* contactName: "幸野 茜（Akane Kono）", */
+  /* contactMail: "chiba.beerfest@gmail.com", */
+  /* instagram: "https://www.instagram.com/chibabeerfest/", */
+  /* instagramHandle: "@chibabeerfest", */
   // Google Map（必要なら差し替え）
   mapUrl: "https://www.google.com/maps?q=さんばしひろば&hl=ja&z=16",
   mapEmbed: "https://www.google.com/maps?q=%E3%81%95%E3%82%93%E3%81%B0%E3%81%97%E3%81%B2%E3%82%8D%E3%81%B0&output=embed",
@@ -851,20 +851,6 @@ export default function Page() {
           <div className="text-lg font-semibold">
             Instagram
           </div>
-
-          <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-            開催情報や最新のお知らせは
-            公式Instagramをご確認ください。
-          </p>
-
-          <a
-            href={EVENT.instagram}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-6 inline-flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-gray-50"
-          >
-            Instagram（{EVENT.instagramHandle}）
-          </a>
 
         </SoftCard>
       </Reveal>
