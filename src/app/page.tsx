@@ -2,7 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 import { Reveal, HoverCard } from "../components/Reveal";
+
 
 const EVENT = {
   title: "チバビアフェスト",
@@ -100,8 +102,6 @@ function SoftCard({ children, className }: { children: React.ReactNode; classNam
     </HoverCard>
   );
 }
-
-import { AnimatePresence, motion } from "framer-motion";
 
 function HeroCarousel({
   images,
@@ -809,59 +809,102 @@ export default function Page() {
       </section>
 
       {/* 参加・問い合わせ */}
-      <section id="contact" className="py-14 sm:py-20 bg-gray-50">
-        <div className="mx-auto max-w-6xl px-6 text-center">
-          <SectionHeader
-            kicker="CONTACT"
-            title="参加・問い合わせ"
-            desc="出店・協賛・取材などのご相談は、Instagramまたはメールからご連絡ください。"
-            center
-          />
+<section id="contact" className="py-14 sm:py-20 bg-gray-50">
+  <div className="mx-auto max-w-6xl px-6 text-center">
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-            <Reveal>
-              <a
-                href={EVENT.instagram}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
-              >
-                Instagram（{EVENT.instagramHandle}）
-              </a>
-            </Reveal>
-            <Reveal delay={0.06}>
-              <a
-                href={`mailto:${EVENT.contactMail}`}
-                className="inline-flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-gray-50"
-              >
-                メール：{EVENT.contactMail}
-              </a>
-            </Reveal>
+    <SectionHeader
+      kicker="CONTACT"
+      title="参加・問い合わせ"
+      desc="出店・協賛・取材・来場に関するご相談は、専用フォームよりお問い合わせください。"
+      center
+    />
+
+    <div className="mt-10 grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto">
+
+      <Reveal>
+        <SoftCard className="p-8 text-center">
+
+          <div className="text-lg font-semibold">
+            お問い合わせフォーム
           </div>
 
-          <Reveal delay={0.12}>
-            <div className="mt-10 mx-auto max-w-3xl text-left">
-              <SoftCard className="p-7">
-                <div className="text-sm font-semibold">運営情報</div>
-                <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-                  <div>
-                    <dt className="text-gray-500">主催</dt>
-                    <dd className="mt-1 font-semibold">{EVENT.organizer}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-gray-500">お問い合わせ</dt>
-                    <dd className="mt-1 font-semibold">
-                      {EVENT.contactName}
-                      <br />
-                      {EVENT.contactMail}
-                    </dd>
-                  </div>
-                </dl>
-              </SoftCard>
+          <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+            出店・協賛・取材・来場に関するお問い合わせは
+            専用フォームよりお送りください。
+          </p>
+
+          <a
+            href="ここにGoogleフォームURL"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-6 inline-flex items-center justify-center rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
+          >
+            フォームを開く
+          </a>
+
+        </SoftCard>
+      </Reveal>
+
+      <Reveal delay={0.06}>
+        <SoftCard className="p-8 text-center">
+
+          <div className="text-lg font-semibold">
+            Instagram
+          </div>
+
+          <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+            開催情報や最新のお知らせは
+            公式Instagramをご確認ください。
+          </p>
+
+          <a
+            href={EVENT.instagram}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-6 inline-flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-gray-50"
+          >
+            Instagram（{EVENT.instagramHandle}）
+          </a>
+
+        </SoftCard>
+      </Reveal>
+
+    </div>
+
+    <Reveal delay={0.12}>
+      <div className="mt-10 mx-auto max-w-2xl text-left">
+
+        <SoftCard className="p-7">
+
+          <div className="text-sm font-semibold">
+            運営情報
+          </div>
+
+          <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+
+            <div>
+              <dt className="text-gray-500">主催</dt>
+              <dd className="mt-1 font-semibold">
+                {EVENT.organizer}
+              </dd>
             </div>
-          </Reveal>
-        </div>
-      </section>
+
+            <div>
+              <dt className="text-gray-500">担当</dt>
+              <dd className="mt-1 font-semibold">
+                {EVENT.contactName}
+              </dd>
+            </div>
+
+          </dl>
+
+        </SoftCard>
+
+      </div>
+    </Reveal>
+
+  </div>
+</section>
 
       <footer className="border-t border-gray-200 py-10 text-center">
         <div className="mx-auto max-w-6xl px-6">
