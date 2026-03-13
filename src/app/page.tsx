@@ -307,13 +307,7 @@ function AnchorRow() {
 
 export default function Page() {
   return (
-    <main className="relative bg-gradient-to-b from-[#fffaf0] via-[#fff1c9] to-[#fde6a6] text-neutral-900">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-amber-200/35 blur-3xl" />
-        <div className="absolute top-40 -left-24 h-[420px] w-[420px] rounded-full bg-sky-200/30 blur-3xl" />
-        <div className="absolute bottom-0 -right-24 h-[420px] w-[420px] rounded-full bg-emerald-200/25 blur-3xl" />
-      </div>
-
+    <main className="relative bg-white text-neutral-900">
       <div className="relative">
         <AnchorRow />
 
@@ -359,74 +353,91 @@ export default function Page() {
           </div>
         </header>
 
-        <section id="about" className="py-14 sm:py-20">
-          <div className="mx-auto max-w-6xl px-6">
-            <SectionHeader
-              kicker="ABOUT"
-              title="概要"
-              desc="千葉市で最大級の屋外クラフトビールフェス。ビール好きはもちろん、クラフトビールが初めての方やご家族連れでも楽しめるイベントです。"
-            />
+<section id="about" className="py-16 sm:py-20 bg-white">
+  <div className="mx-auto max-w-6xl px-6">
+    <SectionHeader
+      kicker="ABOUT"
+      title="概要"
+      desc="千葉市で最大級の屋外クラフトビールフェス。ビール好きはもちろん、クラフトビールが初めての方やご家族連れでも楽しめるイベントです。"
+    />
 
-            <div className="mt-10 grid gap-6 lg:grid-cols-3 items-stretch">
-              <Reveal>
-                <SoftCard
-                  className={`h-full p-0 overflow-hidden ${SECTION_COLORS.breweries.cardBg} ${SECTION_COLORS.breweries.cardBorder}`}
-                >
-                  <a
-                    href="#breweries"
-                    className={`flex h-full flex-col rounded-3xl border p-8 hover:shadow-lg transition ${SECTION_COLORS.breweries.cardBg} ${SECTION_COLORS.breweries.cardBorder}`}
-                  >
-                    <h3 className="text-xl font-semibold mb-3">クラフトビール</h3>
-                    <p className="text-gray-700 leading-relaxed">
-                      千葉県内外からブルワリーが集結。つくり手と飲み手がつながる“特別な一杯”を。
-                    </p>
-                    <span className="mt-auto pt-6 text-sm font-semibold text-neutral-900">
-                      ブルワリーを見る →
-                    </span>
-                  </a>
-                </SoftCard>
-              </Reveal>
+    <div className="mt-10 grid gap-6 lg:grid-cols-3">
 
-              <Reveal delay={0.06}>
-                <SoftCard
-                  className={`h-full p-0 overflow-hidden ${SECTION_COLORS.food.cardBg} ${SECTION_COLORS.food.cardBorder}`}
-                >
-                  <a
-                    href="#food"
-                    className={`flex h-full flex-col rounded-3xl border p-8 hover:shadow-lg transition ${SECTION_COLORS.food.cardBg} ${SECTION_COLORS.food.cardBorder}`}
-                  >
-                    <h3 className="text-xl font-semibold mb-3">フード</h3>
-                    <p className="text-gray-700 leading-relaxed">
-                      ビールに合うこだわりフードが充実。キッチンカー＆テントで食べ歩きも楽しい。
-                    </p>
-                    <span className="mt-auto pt-6 text-sm font-semibold text-neutral-900">
-                      フードを見る →
-                    </span>
-                  </a>
-                </SoftCard>
-              </Reveal>
+      {/* BREWERY */}
+      <Reveal>
+        <a
+          href="#breweries"
+          className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
+          ${SECTION_COLORS.breweries.cardBg} ${SECTION_COLORS.breweries.cardBorder}`}
+        >
+          <div className="text-2xl">🍺</div>
 
-              <Reveal delay={0.12}>
-                <SoftCard
-                  className={`h-full p-0 overflow-hidden ${SECTION_COLORS.contents.cardBg} ${SECTION_COLORS.contents.cardBorder}`}
-                >
-                  <a
-                    href="#contents"
-                    className={`flex h-full flex-col rounded-3xl border p-8 hover:shadow-lg transition ${SECTION_COLORS.contents.cardBg} ${SECTION_COLORS.contents.cardBorder}`}
-                  >
-                    <h3 className="text-xl font-semibold mb-3">体験コンテンツ</h3>
-                    <p className="text-gray-700 leading-relaxed">
-                      ボディペイントなど、家族で楽しめる体験型ブースも用意しています。
-                    </p>
-                    <span className="mt-auto pt-6 text-sm font-semibold text-neutral-900">
-                      コンテンツを見る →
-                    </span>
-                  </a>
-                </SoftCard>
-              </Reveal>
-            </div>
-          </div>
-        </section>
+          <h3 className="mt-4 text-xl font-semibold">
+            クラフトビール
+          </h3>
+
+          <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+            千葉県内外からブルワリーが集結。
+            つくり手と飲み手がつながる“特別な一杯”を。
+          </p>
+
+          <span className="mt-auto pt-6 text-sm font-semibold">
+            ブルワリーを見る →
+          </span>
+        </a>
+      </Reveal>
+
+      {/* FOOD */}
+      <Reveal delay={0.06}>
+        <a
+          href="#food"
+          className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
+          ${SECTION_COLORS.food.cardBg} ${SECTION_COLORS.food.cardBorder}`}
+        >
+          <div className="text-2xl">🍴</div>
+
+          <h3 className="mt-4 text-xl font-semibold">
+            フード
+          </h3>
+
+          <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+            ビールに合うこだわりフードが充実。
+            キッチンカー＆テントで食べ歩きも楽しい。
+          </p>
+
+          <span className="mt-auto pt-6 text-sm font-semibold">
+            フードを見る →
+          </span>
+        </a>
+      </Reveal>
+
+      {/* CONTENTS */}
+      <Reveal delay={0.12}>
+        <a
+          href="#contents"
+          className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
+          ${SECTION_COLORS.contents.cardBg} ${SECTION_COLORS.contents.cardBorder}`}
+        >
+          <div className="text-2xl">🎨</div>
+
+          <h3 className="mt-4 text-xl font-semibold">
+            体験コンテンツ
+          </h3>
+
+          <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+            ボディペイントなど、
+            家族で楽しめる体験型ブースも用意しています。
+          </p>
+
+          <span className="mt-auto pt-6 text-sm font-semibold">
+            コンテンツを見る →
+          </span>
+        </a>
+      </Reveal>
+
+    </div>
+  </div>
+</section>
 
         <section id="info" className="py-14 sm:py-20 bg-gray-50">
           <div className="mx-auto max-w-6xl px-6">
