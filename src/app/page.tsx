@@ -501,7 +501,7 @@ export default function Page() {
               {[
                 {
                   title: "多彩なクラフトビール",
-                  desc: "千葉県内外からブルワリーが集結。ブルワーと交流しながら味わう一杯は格別。",
+                  desc: "千葉県内外からブルワリーが集結。ブルワーと交流しながら味わう一杯は格別。　　　　",
                   img: "/images/brewery.png",
                 },
                 {
