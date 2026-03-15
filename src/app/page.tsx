@@ -297,12 +297,7 @@ function AnchorRow() {
               href={EVENT.instagram}
               target="_blank"
               rel="noreferrer"
-              onClick={() =>
-                sendGAEvent("event", "click_instagram", {
-                  category: "instagram",
-                  label: "header",
-                })
-              }
+              onClick={() => sendGAEvent("event", "click_instagram_header")}
               className="rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white hover:bg-neutral-800"
             >
               最新情報（Instagram）
@@ -344,12 +339,7 @@ export default function Page() {
                   <div className="mt-6 flex flex-col sm:flex-row gap-3">
                     <a
                       href="#breweries"
-                      onClick={() =>
-                        sendGAEvent("event", "click_breweries_link", {
-                          category: "breweries",
-                          label: "hero",
-                        })
-                      }
+                      onClick={() => sendGAEvent("event", "click_breweries_hero")}
                       className="inline-flex items-center justify-center rounded-2xl bg-white/95 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-white"
                     >
                       ブルワリーを見る
@@ -357,12 +347,7 @@ export default function Page() {
 
                     <a
                       href="#access"
-                      onClick={() =>
-                        sendGAEvent("event", "click_access_section", {
-                          category: "navigation",
-                          label: "hero",
-                        })
-                      }
+                      onClick={() => sendGAEvent("event", "click_access_hero")}
                       className="inline-flex items-center justify-center rounded-2xl border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/15"
                     >
                       アクセス
@@ -386,12 +371,7 @@ export default function Page() {
               <Reveal>
                 <a
                   href="#breweries"
-                  onClick={() =>
-                    sendGAEvent("event", "click_breweries_link", {
-                      category: "breweries",
-                      label: "about",
-                    })
-                  }
+                  onClick={() => sendGAEvent("event", "click_breweries_about")}
                   className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
                   ${SECTION_COLORS.breweries.cardBg} ${SECTION_COLORS.breweries.cardBorder}`}
                 >
@@ -413,12 +393,7 @@ export default function Page() {
               <Reveal delay={0.06}>
                 <a
                   href="#food"
-                  onClick={() =>
-                    sendGAEvent("event", "click_food_link", {
-                      category: "food",
-                      label: "food",
-                    })
-                  }
+                  onClick={() => sendGAEvent("event", "click_food_about")}
                   className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
                   ${SECTION_COLORS.food.cardBg} ${SECTION_COLORS.food.cardBorder}`}
                 >
@@ -440,12 +415,7 @@ export default function Page() {
               <Reveal delay={0.12}>
                 <a
                   href="#contents"
-                  onClick={() =>
-                    sendGAEvent("event", "click_contents_link", {
-                      category: "contents",
-                      label: "contents",
-                    })
-                  }
+                  onClick={() => sendGAEvent("event", "click_contents_about")}
                   className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
                   ${SECTION_COLORS.contents.cardBg} ${SECTION_COLORS.contents.cardBorder}`}
                 >
@@ -758,12 +728,7 @@ export default function Page() {
                       href={EVENT.mapUrl}
                       target="_blank"
                       rel="noreferrer"
-                      onClick={() =>
-                        sendGAEvent("event", "click_access_map", {
-                          category: "access",
-                          label: "access_section",
-                        })
-                      }
+                      onClick={() => sendGAEvent("event", "click_access_map")}
                       className="inline-flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 hover:bg-gray-50"
                     >
                       Google Mapsで開く
@@ -850,12 +815,7 @@ export default function Page() {
                     href="https://forms.gle/ここを実際のGoogleフォームURLに変更"
                     target="_blank"
                     rel="noreferrer"
-                    onClick={() =>
-                      sendGAEvent("event", "click_contact_link", {
-                        category: "contact",
-                        label: "contact_section",
-                      })
-                    }
+                    onClick={() => sendGAEvent("event", "click_contact_form")}
                     className="mt-8 inline-flex items-center justify-center rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
                   >
                     フォームを開く
