@@ -343,7 +343,7 @@ export default function Page() {
                     <a
                       href="#breweries"
                       onClick={() =>
-                      sendGAEvent("event", "click_brewery_link", {
+                      sendGAEvent("event", "click_breweries_link", {
                       category: "brewery_hero",
                       label: brewery_hero.name,
                        })
@@ -381,7 +381,7 @@ export default function Page() {
         <a
           href="#breweries"
           onClick={() =>
-           sendGAEvent("event", "click_brewery_link", {
+           sendGAEvent("event", "click_breweries_link", {
            category: "brewery",
            label: brewery.name,
            })
