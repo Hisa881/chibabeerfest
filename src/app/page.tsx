@@ -497,11 +497,11 @@ export default function Page() {
               center
             />
 
-            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
               {[
                 {
                   title: "多彩なクラフトビール",
-                  desc: "千葉県内外からブルワリーが集結。ブルワーと交流しながら味わう一杯は格別。　　　　",
+                  desc: "千葉県内外からブルワリーが集結。ブルワーと交流しながら味わう一杯は格別。",
                   img: "/images/brewery.png",
                 },
                 {
@@ -521,14 +521,16 @@ export default function Page() {
                 },
               ].map((h, i) => (
                 <Reveal key={h.title} delay={0.06 + i * 0.05}>
-                  <SoftCard className="overflow-hidden">
+                  <SoftCard className="overflow-hidden flex h-full flex-col">
                     <div className="relative h-48 w-full">
                       <Image src={h.img} alt={h.title} fill className="object-cover" />
                     </div>
-                    <div className="p-6">
-                      <div className="text-base font-semibold">{h.title}</div>
-                      <p className="mt-2 text-sm leading-relaxed text-gray-600">{h.desc}</p>
-                    </div>
+                    <div className="flex flex-1 flex-col p-6">
+ 			 <div className="text-base font-semibold">{h.title}</div>
+  				<p className="mt-2 text-sm leading-relaxed text-gray-600">
+    				{h.desc}
+  				</p>
+		    </div>
                   </SoftCard>
                 </Reveal>
               ))}
