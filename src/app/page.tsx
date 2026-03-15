@@ -342,6 +342,12 @@ export default function Page() {
                   <div className="mt-6 flex flex-col sm:flex-row gap-3">
                     <a
                       href="#breweries"
+                      onClick={() =>
+                      sendGAEvent("event", "click_brewery_link", {
+                      category: "brewery_hero",
+                      label: brewery_hero.name,
+                       })
+                     }
                       className="inline-flex items-center justify-center rounded-2xl bg-white/95 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-white"
                     >
                       ブルワリーを見る
