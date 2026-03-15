@@ -812,7 +812,7 @@ export default function Page() {
                   </p>
 
                   <a
-                    href="https://docs.google.com/forms/d/e/1FAIpQLSdYEDZ_wxC2EhMp_U1o84stQO7LFzD9uhTR1yF-UrMCITAxcg/viewform?usp=publish-editor"
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSeH8nUKrjY2OYVQjGzwZb0HuAnNdvpcSuAkkvblBvz8G9KIHg/viewform?usp=dialog"
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => sendGAEvent("event", "click_contact_form")}
