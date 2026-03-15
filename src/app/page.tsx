@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Reveal, HoverCard } from "../components/Reveal";
+import { sendGAEvent } from "@next/third-parties/google";
 
 const EVENT = {
   title: "チバビアフェスト",
@@ -294,6 +295,12 @@ function AnchorRow() {
               href={EVENT.instagram}
               target="_blank"
               rel="noreferrer"
+              onClick={() =>
+               sendGAEvent("event", "click_instagram", {
+               category: "sns",
+               label: "header",
+              })
+            }
               className="rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white hover:bg-neutral-800"
             >
               最新情報（Instagram）
