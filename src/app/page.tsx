@@ -374,6 +374,12 @@ export default function Page() {
       <Reveal>
         <a
           href="#breweries"
+          onClick={() =>
+           sendGAEvent("event", "click_brewery_link", {
+           category: "brewery",
+           label: brewery.name,
+           })
+          }
           className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
           ${SECTION_COLORS.breweries.cardBg} ${SECTION_COLORS.breweries.cardBorder}`}
         >
@@ -398,6 +404,14 @@ export default function Page() {
       <Reveal delay={0.06}>
         <a
           href="#food"
+          href="#breweries"
+          onClick={() =>
+           sendGAEvent("event", "click_food_link", {
+           category: "food",
+           label: food.name,
+           })
+          }
+
           className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
           ${SECTION_COLORS.food.cardBg} ${SECTION_COLORS.food.cardBorder}`}
         >
@@ -422,6 +436,14 @@ export default function Page() {
       <Reveal delay={0.12}>
         <a
           href="#contents"
+          href="#breweries"
+          onClick={() =>
+           sendGAEvent("event", "click_contents_link", {
+           category: "contents",
+           label: contents.name,
+           })
+          }
+
           className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
           ${SECTION_COLORS.contents.cardBg} ${SECTION_COLORS.contents.cardBorder}`}
         >
@@ -489,6 +511,11 @@ export default function Page() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
+                    onClick={() =>
+                     sendGAEvent("event", "click_access_map", {
+                     category: "access",
+                     })
+                   }
                 </SoftCard>
               </Reveal>
             </div>
@@ -564,7 +591,7 @@ export default function Page() {
                     alt="出店ブルワリー"
                     fill
                     className="object-contain"
-                  />
+                  />                    
                 </div>
                 <div className="p-7">
                   <div className="text-sm font-semibold">出店ブルワリー（順不同）</div>
@@ -827,6 +854,13 @@ export default function Page() {
                     href="https://forms.gle/ここを実際のGoogleフォームURLに変更"
                     target="_blank"
                     rel="noreferrer"
+                    onClick={() =>
+                     sendGAEvent("event", "click_contact_link", {
+                     category: "contact",
+                     label: contact.name,
+                    })
+                  }
+
                     className="mt-8 inline-flex items-center justify-center rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
                   >
                     フォームを開く
