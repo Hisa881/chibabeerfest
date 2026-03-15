@@ -15,12 +15,14 @@ const EVENT = {
   venue: "さんばしひろば（千葉県千葉市中央区中央港）",
   accessShort: "JR京葉線・千葉都市モノレール「千葉みなと駅」徒歩3分",
   price: "入場無料（ビール・フードは各ブースで購入）",
-  weatherNote: "天候等により内容が変更・中止となる場合があります（最新情報はSNSで告知）",
+  weatherNote:
+    "天候等により内容が変更・中止となる場合があります（最新情報はSNSで告知）",
   organizer: "チバビアフェスト実行委員会",
   instagram: "https://www.instagram.com/chibabeerfest/",
   instagramHandle: "@chibabeerfest",
   mapUrl: "https://www.google.com/maps?q=さんばしひろば&hl=ja&z=16",
-  mapEmbed: "https://www.google.com/maps?q=%E3%81%95%E3%82%93%E3%81%B0%E3%81%97%E3%81%B2%E3%82%8D%E3%81%B0&output=embed",
+  mapEmbed:
+    "https://www.google.com/maps?q=%E3%81%95%E3%82%93%E3%81%B0%E3%81%97%E3%81%B2%E3%82%8D%E3%81%B0&output=embed",
 };
 
 const HERO_IMAGES = [{ src: "/images/hero_1.png", alt: "HERO1" }];
@@ -296,11 +298,11 @@ function AnchorRow() {
               target="_blank"
               rel="noreferrer"
               onClick={() =>
-               sendGAEvent("event", "click_instagram", {
-               category: "sns",
-               label: "header",
-              })
-            }
+                sendGAEvent("event", "click_instagram", {
+                  category: "instagram",
+                  label: "header",
+                })
+              }
               className="rounded-full bg-neutral-900 px-4 py-2 text-xs font-semibold text-white hover:bg-neutral-800"
             >
               最新情報（Instagram）
@@ -343,11 +345,11 @@ export default function Page() {
                     <a
                       href="#breweries"
                       onClick={() =>
-                      sendGAEvent("event", "click_breweries_link", {
-                      category: "brewery_hero",
-                      label: brewery_hero.name,
-                       })
-                     }
+                        sendGAEvent("event", "click_breweries_link", {
+                          category: "breweries",
+                          label: "hero",
+                        })
+                      }
                       className="inline-flex items-center justify-center rounded-2xl bg-white/95 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-white"
                     >
                       ブルワリーを見る
@@ -355,6 +357,12 @@ export default function Page() {
 
                     <a
                       href="#access"
+                      onClick={() =>
+                        sendGAEvent("event", "click_access_section", {
+                          category: "navigation",
+                          label: "hero",
+                        })
+                      }
                       className="inline-flex items-center justify-center rounded-2xl border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/15"
                     >
                       アクセス
@@ -366,113 +374,98 @@ export default function Page() {
           </div>
         </header>
 
-<section id="about" className="py-16 sm:py-20 bg-white">
-  <div className="mx-auto max-w-6xl px-6">
-    <SectionHeader
-      kicker="ABOUT"
-      title="概要"
-      desc="千葉市で最大級の屋外クラフトビールフェス。ビール好きはもちろん、クラフトビールが初めての方やご家族連れでも楽しめるイベントです。"
-    />
+        <section id="about" className="py-16 sm:py-20 bg-white">
+          <div className="mx-auto max-w-6xl px-6">
+            <SectionHeader
+              kicker="ABOUT"
+              title="概要"
+              desc="千葉市で最大級の屋外クラフトビールフェス。ビール好きはもちろん、クラフトビールが初めての方やご家族連れでも楽しめるイベントです。"
+            />
 
-    <div className="mt-10 grid gap-6 lg:grid-cols-3">
+            <div className="mt-10 grid gap-6 lg:grid-cols-3">
+              <Reveal>
+                <a
+                  href="#breweries"
+                  onClick={() =>
+                    sendGAEvent("event", "click_breweries_link", {
+                      category: "breweries",
+                      label: "about",
+                    })
+                  }
+                  className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
+                  ${SECTION_COLORS.breweries.cardBg} ${SECTION_COLORS.breweries.cardBorder}`}
+                >
+                  <div className="text-2xl">🍺</div>
 
-      {/* BREWERY */}
-      <Reveal>
-        <a
-          href="#breweries"
-          onClick={() =>
-           sendGAEvent("event", "click_breweries_link", {
-           category: "brewery",
-           label: brewery.name,
-           })
-          }
-          className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
-          ${SECTION_COLORS.breweries.cardBg} ${SECTION_COLORS.breweries.cardBorder}`}
-        >
-          <div className="text-2xl">🍺</div>
+                  <h3 className="mt-4 text-xl font-semibold">クラフトビール</h3>
 
-          <h3 className="mt-4 text-xl font-semibold">
-            クラフトビール
-          </h3>
+                  <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+                    千葉県内外からブルワリーが集結。
+                    つくり手と飲み手がつながる“特別な一杯”を。
+                  </p>
 
-          <p className="mt-3 text-sm text-gray-700 leading-relaxed">
-            千葉県内外からブルワリーが集結。
-            つくり手と飲み手がつながる“特別な一杯”を。
-          </p>
+                  <span className="mt-auto pt-6 text-sm font-semibold">
+                    ブルワリーを見る →
+                  </span>
+                </a>
+              </Reveal>
 
-          <span className="mt-auto pt-6 text-sm font-semibold">
-            ブルワリーを見る →
-          </span>
-        </a>
-      </Reveal>
+              <Reveal delay={0.06}>
+                <a
+                  href="#food"
+                  onClick={() =>
+                    sendGAEvent("event", "click_food_link", {
+                      category: "food",
+                      label: "food",
+                    })
+                  }
+                  className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
+                  ${SECTION_COLORS.food.cardBg} ${SECTION_COLORS.food.cardBorder}`}
+                >
+                  <div className="text-2xl">🍴</div>
 
-      {/* FOOD */}
-      <Reveal delay={0.06}>
-        <a
-          href="#food"
-          href="#breweries"
-          onClick={() =>
-           sendGAEvent("event", "click_food_link", {
-           category: "food",
-           label: food.name,
-           })
-          }
+                  <h3 className="mt-4 text-xl font-semibold">フード</h3>
 
-          className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
-          ${SECTION_COLORS.food.cardBg} ${SECTION_COLORS.food.cardBorder}`}
-        >
-          <div className="text-2xl">🍴</div>
+                  <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+                    ビールに合うこだわりフードが充実。
+                    キッチンカー＆テントで食べ歩きも楽しい。
+                  </p>
 
-          <h3 className="mt-4 text-xl font-semibold">
-            フード
-          </h3>
+                  <span className="mt-auto pt-6 text-sm font-semibold">
+                    フードを見る →
+                  </span>
+                </a>
+              </Reveal>
 
-          <p className="mt-3 text-sm text-gray-700 leading-relaxed">
-            ビールに合うこだわりフードが充実。
-            キッチンカー＆テントで食べ歩きも楽しい。
-          </p>
+              <Reveal delay={0.12}>
+                <a
+                  href="#contents"
+                  onClick={() =>
+                    sendGAEvent("event", "click_contents_link", {
+                      category: "contents",
+                      label: "contents",
+                    })
+                  }
+                  className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
+                  ${SECTION_COLORS.contents.cardBg} ${SECTION_COLORS.contents.cardBorder}`}
+                >
+                  <div className="text-2xl">🎨</div>
 
-          <span className="mt-auto pt-6 text-sm font-semibold">
-            フードを見る →
-          </span>
-        </a>
-      </Reveal>
+                  <h3 className="mt-4 text-xl font-semibold">体験コンテンツ</h3>
 
-      {/* CONTENTS */}
-      <Reveal delay={0.12}>
-        <a
-          href="#contents"
-          href="#breweries"
-          onClick={() =>
-           sendGAEvent("event", "click_contents_link", {
-           category: "contents",
-           label: contents.name,
-           })
-          }
+                  <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+                    ボディペイントなど、
+                    家族で楽しめる体験型ブースも用意しています。
+                  </p>
 
-          className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
-          ${SECTION_COLORS.contents.cardBg} ${SECTION_COLORS.contents.cardBorder}`}
-        >
-          <div className="text-2xl">🎨</div>
-
-          <h3 className="mt-4 text-xl font-semibold">
-            体験コンテンツ
-          </h3>
-
-          <p className="mt-3 text-sm text-gray-700 leading-relaxed">
-            ボディペイントなど、
-            家族で楽しめる体験型ブースも用意しています。
-          </p>
-
-          <span className="mt-auto pt-6 text-sm font-semibold">
-            コンテンツを見る →
-          </span>
-        </a>
-      </Reveal>
-
-    </div>
-  </div>
-</section>
+                  <span className="mt-auto pt-6 text-sm font-semibold">
+                    コンテンツを見る →
+                  </span>
+                </a>
+              </Reveal>
+            </div>
+          </div>
+        </section>
 
         <section id="info" className="py-14 sm:py-20 bg-gray-50">
           <div className="mx-auto max-w-6xl px-6">
@@ -517,11 +510,6 @@ export default function Page() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
-                    onClick={() =>
-                     sendGAEvent("event", "click_access_map", {
-                     category: "access",
-                     })
-                   }
                 </SoftCard>
               </Reveal>
             </div>
@@ -566,11 +554,9 @@ export default function Page() {
                       <Image src={h.img} alt={h.title} fill className="object-cover" />
                     </div>
                     <div className="flex flex-1 flex-col p-6">
- 			 <div className="text-base font-semibold">{h.title}</div>
-  				<p className="mt-2 text-sm leading-relaxed text-gray-600">
-    				{h.desc}
-  				</p>
-		    </div>
+                      <div className="text-base font-semibold">{h.title}</div>
+                      <p className="mt-2 text-sm leading-relaxed text-gray-600">{h.desc}</p>
+                    </div>
                   </SoftCard>
                 </Reveal>
               ))}
@@ -597,7 +583,7 @@ export default function Page() {
                     alt="出店ブルワリー"
                     fill
                     className="object-contain"
-                  />                    
+                  />
                 </div>
                 <div className="p-7">
                   <div className="text-sm font-semibold">出店ブルワリー（順不同）</div>
@@ -696,8 +682,6 @@ export default function Page() {
               desc="ブルワリー・フードの楽しみ方に加え、シールラリーや体験ブース、オリジナルリユースカップも。"
             />
 
-            <div className="mt-10 grid gap-6 lg:grid-cols-2"></div>
-
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
               <Reveal>
                 <SoftCard className="overflow-hidden">
@@ -774,6 +758,12 @@ export default function Page() {
                       href={EVENT.mapUrl}
                       target="_blank"
                       rel="noreferrer"
+                      onClick={() =>
+                        sendGAEvent("event", "click_access_map", {
+                          category: "access",
+                          label: "access_section",
+                        })
+                      }
                       className="inline-flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 hover:bg-gray-50"
                     >
                       Google Mapsで開く
@@ -861,12 +851,11 @@ export default function Page() {
                     target="_blank"
                     rel="noreferrer"
                     onClick={() =>
-                     sendGAEvent("event", "click_contact_link", {
-                     category: "contact",
-                     label: contact.name,
-                    })
-                  }
-
+                      sendGAEvent("event", "click_contact_link", {
+                        category: "contact",
+                        label: "contact_section",
+                      })
+                    }
                     className="mt-8 inline-flex items-center justify-center rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
                   >
                     フォームを開く
