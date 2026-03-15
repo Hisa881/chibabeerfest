@@ -812,7 +812,7 @@ export default function Page() {
                   </p>
 
                   <a
-                    href="https://forms.gle/ここを実際のGoogleフォームURLに変更"
+                    href="https://docs.google.com/forms/u/1/d/1QVykZ0fse4aVKcJUAI37cxrQXD6oS9regVlk2tW1x8c/edit?usp=forms_home&ouid=111428565793566325184&ths=true"
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => sendGAEvent("event", "click_contact_form")}
