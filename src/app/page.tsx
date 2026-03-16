@@ -162,7 +162,7 @@ function SoftCard({
 ======================================== */
 function HeroCarousel({
   images,
-  intervalMs = 5000,
+  intervalMs = 3500,
 }: {
   images: { src: string; alt: string }[];
   intervalMs?: number;
@@ -174,10 +174,6 @@ function HeroCarousel({
 
   const next = React.useCallback(() => {
     setIndex((i) => (i + 1) % count);
-  }, [count]);
-
-  const prev = React.useCallback(() => {
-    setIndex((i) => (i - 1 + count) % count);
   }, [count]);
 
   React.useEffect(() => {
@@ -203,7 +199,7 @@ function HeroCarousel({
           initial={{ opacity: 0, scale: 1.02 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.01 }}
-          transition={{ duration: 0.55, ease: "easeOut" }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.18}
@@ -211,7 +207,9 @@ function HeroCarousel({
             const x = info.offset.x;
             const v = info.velocity.x;
             if (x < -60 || v < -500) next();
-            if (x > 60 || v > 500) prev();
+            if (x > 60 || v > 500) {
+              setIndex((i) => (i - 1 + count) % count);
+            }
           }}
         >
           <Image
@@ -226,47 +224,26 @@ function HeroCarousel({
       </AnimatePresence>
 
       {count > 1 && (
-        <>
-          <button
-            type="button"
-            aria-label="前の画像"
-            onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/85 backdrop-blur px-3 py-2 text-sm font-semibold shadow-sm border border-gray-200 hover:bg-white"
-          >
-            ←
-          </button>
-
-          <button
-            type="button"
-            aria-label="次の画像"
-            onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/85 backdrop-blur px-3 py-2 text-sm font-semibold shadow-sm border border-gray-200 hover:bg-white"
-          >
-            →
-          </button>
-
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
-            {images.map((img, i) => (
-              <button
-                key={img.src}
-                type="button"
-                aria-label={`スライド ${i + 1}`}
-                onClick={() => setIndex(i)}
-                className={[
-                  "h-2.5 w-2.5 rounded-full border",
-                  i === index
-                    ? "bg-neutral-900 border-neutral-900"
-                    : "bg-white/80 border-gray-300 hover:bg-white",
-                ].join(" ")}
-              />
-            ))}
-          </div>
-        </>
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+          {images.map((img, i) => (
+            <button
+              key={img.src}
+              type="button"
+              aria-label={`スライド ${i + 1}`}
+              onClick={() => setIndex(i)}
+              className={[
+                "h-2.5 w-2.5 rounded-full border",
+                i === index
+                  ? "bg-neutral-900 border-neutral-900"
+                  : "bg-white/80 border-gray-300 hover:bg-white",
+              ].join(" ")}
+            />
+          ))}
+        </div>
       )}
     </div>
   );
 }
-
 /* ========================================
    セクション見出し
 ======================================== */
@@ -376,7 +353,7 @@ export default function Page() {
           <div className="relative h-[60vh] min-h-[420px] w-full overflow-hidden sm:h-[72vh] sm:min-h-[520px]">
             {/* スマホ：カルーセル */}
             <div className="absolute inset-0 sm:hidden">
-              <HeroCarousel images={HERO_IMAGES} intervalMs={5000} />
+              <HeroCarousel images={HERO_IMAGES} intervalMs={3500} />
             </div>
 
             {/* PC：固定画像 */}
