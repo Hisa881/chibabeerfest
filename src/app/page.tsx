@@ -2,6 +2,8 @@
 
 import React from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import { Reveal, HoverCard } from "../components/Reveal";
 import { sendGAEvent } from "@next/third-parties/google";
 
 const EVENT = {
@@ -22,6 +24,8 @@ const EVENT = {
   mapEmbed:
     "https://www.google.com/maps?q=%E3%81%95%E3%82%93%E3%81%B0%E3%81%97%E3%81%B2%E3%82%8D%E3%81%B0&output=embed",
 };
+
+const HERO_IMAGES = [{ src: "/images/hero_1.png", alt: "HERO1" }];
 
 const SECTION_COLORS = {
   breweries: {
@@ -110,13 +114,118 @@ function SoftCard({
   className?: string;
 }) {
   return (
-    <div
+    <HoverCard
       className={
-        "rounded-3xl border border-gray-200 bg-white shadow-sm transition " +
+        "rounded-3xl border border-gray-200 bg-white shadow-sm hover:shadow-md transition " +
         (className ?? "")
       }
     >
       {children}
+    </HoverCard>
+  );
+}
+
+function HeroCarousel({
+  images,
+  intervalMs = 5000,
+}: {
+  images: { src: string; alt: string }[];
+  intervalMs?: number;
+}) {
+  const [index, setIndex] = React.useState(0);
+  const [paused, setPaused] = React.useState(false);
+
+  const count = images.length;
+
+  const next = React.useCallback(() => {
+    setIndex((i) => (i + 1) % count);
+  }, [count]);
+
+  const prev = React.useCallback(() => {
+    setIndex((i) => (i - 1 + count) % count);
+  }, [count]);
+
+  React.useEffect(() => {
+    if (paused || count <= 1) return;
+    const id = window.setInterval(() => next(), intervalMs);
+    return () => window.clearInterval(id);
+  }, [paused, count, intervalMs, next]);
+
+  const current = images[index];
+
+  return (
+    <div
+      className="relative h-full w-full"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
+      <AnimatePresence initial={false} mode="wait">
+        <motion.div
+          key={current.src}
+          className="absolute inset-0"
+          initial={{ opacity: 0, scale: 1.02 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.01 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.18}
+          onDragEnd={(_, info) => {
+            const x = info.offset.x;
+            const v = info.velocity.x;
+            if (x < -60 || v < -500) next();
+            if (x > 60 || v > 500) prev();
+          }}
+        >
+          <Image
+            src={current.src}
+            alt={current.alt}
+            fill
+            priority={index === 0}
+            className="object-cover"
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {count > 1 && (
+        <>
+          <button
+            type="button"
+            aria-label="前の画像"
+            onClick={prev}
+            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/85 backdrop-blur px-3 py-2 text-sm font-semibold shadow-sm border border-gray-200 hover:bg-white"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            aria-label="次の画像"
+            onClick={next}
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/85 backdrop-blur px-3 py-2 text-sm font-semibold shadow-sm border border-gray-200 hover:bg-white"
+          >
+            →
+          </button>
+
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+            {images.map((img, i) => (
+              <button
+                key={img.src}
+                type="button"
+                aria-label={`スライド ${i + 1}`}
+                onClick={() => setIndex(i)}
+                className={[
+                  "h-2.5 w-2.5 rounded-full border",
+                  i === index
+                    ? "bg-neutral-900 border-neutral-900"
+                    : "bg-white/80 border-gray-300 hover:bg-white",
+                ].join(" ")}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -134,17 +243,23 @@ function SectionHeader({
 }) {
   return (
     <div className={center ? "text-center" : ""}>
-      <div className="text-xs tracking-[0.18em] text-gray-500">{kicker}</div>
-      <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h2>
+      <Reveal>
+        <div className="text-xs tracking-[0.18em] text-gray-500">{kicker}</div>
+      </Reveal>
+      <Reveal delay={0.06}>
+        <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h2>
+      </Reveal>
       {desc ? (
-        <p
-          className={
-            "mt-5 text-sm sm:text-base leading-relaxed text-gray-600 " +
-            (center ? "mx-auto max-w-2xl" : "")
-          }
-        >
-          {desc}
-        </p>
+        <Reveal delay={0.12}>
+          <p
+            className={
+              "mt-5 text-sm sm:text-base leading-relaxed text-gray-600 " +
+              (center ? "mx-auto max-w-2xl" : "")
+            }
+          >
+            {desc}
+          </p>
+        </Reveal>
       ) : null}
     </div>
   );
@@ -165,7 +280,7 @@ function AnchorRow() {
   ];
 
   return (
-    <div className="sticky top-0 z-20 border-b border-gray-200/70 bg-white">
+    <div className="sticky top-0 z-20 border-b border-gray-200/70 bg-white/80 backdrop-blur">
       <div className="mx-auto max-w-6xl px-6 py-3">
         <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap">
           {items.map((i) => (
@@ -202,14 +317,7 @@ export default function Page() {
 
         <header className="relative">
           <div className="relative h-[72vh] min-h-[520px] w-full overflow-hidden">
-            <Image
-              src="/images/hero_1.png"
-              alt="CHIBA BEERFEST"
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
+            <HeroCarousel images={HERO_IMAGES} intervalMs={5000} />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
           </div>
 
@@ -260,65 +368,71 @@ export default function Page() {
             />
 
             <div className="mt-10 grid gap-6 lg:grid-cols-3">
-              <a
-                href="#breweries"
-                onClick={() => sendGAEvent("event", "click_breweries_about")}
-                className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
-                ${SECTION_COLORS.breweries.cardBg} ${SECTION_COLORS.breweries.cardBorder}`}
-              >
-                <div className="text-2xl">🍺</div>
+              <Reveal>
+                <a
+                  href="#breweries"
+                  onClick={() => sendGAEvent("event", "click_breweries_about")}
+                  className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
+                  ${SECTION_COLORS.breweries.cardBg} ${SECTION_COLORS.breweries.cardBorder}`}
+                >
+                  <div className="text-2xl">🍺</div>
 
-                <h3 className="mt-4 text-xl font-semibold">クラフトビール</h3>
+                  <h3 className="mt-4 text-xl font-semibold">クラフトビール</h3>
 
-                <p className="mt-3 text-sm text-gray-700 leading-relaxed">
-                  千葉県内外からブルワリーが集結。
-                  つくり手と飲み手がつながる“特別な一杯”を。
-                </p>
+                  <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+                    千葉県内外からブルワリーが集結。
+                    つくり手と飲み手がつながる“特別な一杯”を。
+                  </p>
 
-                <span className="mt-auto pt-6 text-sm font-semibold">
-                  ブルワリーを見る →
-                </span>
-              </a>
+                  <span className="mt-auto pt-6 text-sm font-semibold">
+                    ブルワリーを見る →
+                  </span>
+                </a>
+              </Reveal>
 
-              <a
-                href="#food"
-                onClick={() => sendGAEvent("event", "click_food_about")}
-                className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
-                ${SECTION_COLORS.food.cardBg} ${SECTION_COLORS.food.cardBorder}`}
-              >
-                <div className="text-2xl">🍴</div>
+              <Reveal delay={0.06}>
+                <a
+                  href="#food"
+                  onClick={() => sendGAEvent("event", "click_food_about")}
+                  className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
+                  ${SECTION_COLORS.food.cardBg} ${SECTION_COLORS.food.cardBorder}`}
+                >
+                  <div className="text-2xl">🍴</div>
 
-                <h3 className="mt-4 text-xl font-semibold">フード</h3>
+                  <h3 className="mt-4 text-xl font-semibold">フード</h3>
 
-                <p className="mt-3 text-sm text-gray-700 leading-relaxed">
-                  ビールに合うこだわりフードが充実。
-                  キッチンカー＆テントで食べ歩きも楽しい。
-                </p>
+                  <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+                    ビールに合うこだわりフードが充実。
+                    キッチンカー＆テントで食べ歩きも楽しい。
+                  </p>
 
-                <span className="mt-auto pt-6 text-sm font-semibold">
-                  フードを見る →
-                </span>
-              </a>
+                  <span className="mt-auto pt-6 text-sm font-semibold">
+                    フードを見る →
+                  </span>
+                </a>
+              </Reveal>
 
-              <a
-                href="#contents"
-                onClick={() => sendGAEvent("event", "click_contents_about")}
-                className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
-                ${SECTION_COLORS.contents.cardBg} ${SECTION_COLORS.contents.cardBorder}`}
-              >
-                <div className="text-2xl">🎨</div>
+              <Reveal delay={0.12}>
+                <a
+                  href="#contents"
+                  onClick={() => sendGAEvent("event", "click_contents_about")}
+                  className={`group flex flex-col rounded-3xl border p-8 transition hover:-translate-y-1 hover:shadow-lg
+                  ${SECTION_COLORS.contents.cardBg} ${SECTION_COLORS.contents.cardBorder}`}
+                >
+                  <div className="text-2xl">🎨</div>
 
-                <h3 className="mt-4 text-xl font-semibold">体験コンテンツ</h3>
+                  <h3 className="mt-4 text-xl font-semibold">体験コンテンツ</h3>
 
-                <p className="mt-3 text-sm text-gray-700 leading-relaxed">
-                  ボディペイントなど、
-                  家族で楽しめる体験型ブースも用意しています。
-                </p>
+                  <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+                    ボディペイントなど、
+                    家族で楽しめる体験型ブースも用意しています。
+                  </p>
 
-                <span className="mt-auto pt-6 text-sm font-semibold">
-                  コンテンツを見る →
-                </span>
-              </a>
+                  <span className="mt-auto pt-6 text-sm font-semibold">
+                    コンテンツを見る →
+                  </span>
+                </a>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -332,38 +446,42 @@ export default function Page() {
             />
 
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
-              <SoftCard className="p-7">
-                <dl className="space-y-4 text-sm">
-                  <div className="flex items-start justify-between gap-6">
-                    <dt className="text-gray-500">開催日時</dt>
-                    <dd className="text-right font-semibold">
-                      <p className="whitespace-pre-line">{EVENT.timeLabel}</p>
-                    </dd>
-                  </div>
-                  <div className="flex items-start justify-between gap-6">
-                    <dt className="text-gray-500">会場</dt>
-                    <dd className="text-right font-semibold">{EVENT.venue}</dd>
-                  </div>
-                  <div className="flex items-start justify-between gap-6">
-                    <dt className="text-gray-500">アクセス</dt>
-                    <dd className="text-right font-semibold">{EVENT.accessShort}</dd>
-                  </div>
-                  <div className="flex items-start justify-between gap-6">
-                    <dt className="text-gray-500">入場料</dt>
-                    <dd className="text-right font-semibold">{EVENT.price}</dd>
-                  </div>
-                </dl>
-              </SoftCard>
+              <Reveal>
+                <SoftCard className="p-7">
+                  <dl className="space-y-4 text-sm">
+                    <div className="flex items-start justify-between gap-6">
+                      <dt className="text-gray-500">開催日時</dt>
+                      <dd className="text-right font-semibold">
+                        <p className="whitespace-pre-line">{EVENT.timeLabel}</p>
+                      </dd>
+                    </div>
+                    <div className="flex items-start justify-between gap-6">
+                      <dt className="text-gray-500">会場</dt>
+                      <dd className="text-right font-semibold">{EVENT.venue}</dd>
+                    </div>
+                    <div className="flex items-start justify-between gap-6">
+                      <dt className="text-gray-500">アクセス</dt>
+                      <dd className="text-right font-semibold">{EVENT.accessShort}</dd>
+                    </div>
+                    <div className="flex items-start justify-between gap-6">
+                      <dt className="text-gray-500">入場料</dt>
+                      <dd className="text-right font-semibold">{EVENT.price}</dd>
+                    </div>
+                  </dl>
+                </SoftCard>
+              </Reveal>
 
-              <SoftCard className="overflow-hidden">
-                <iframe
-                  title="map"
-                  src={EVENT.mapEmbed}
-                  className="h-80 w-full"
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-              </SoftCard>
+              <Reveal delay={0.06}>
+                <SoftCard className="overflow-hidden">
+                  <iframe
+                    title="map"
+                    src={EVENT.mapEmbed}
+                    className="h-80 w-full"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </SoftCard>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -399,22 +517,18 @@ export default function Page() {
                   desc: "6杯分のシールでくじ引き。ハズレなし、ブルワリーグッズが当たるチャンス！",
                   img: "/images/seal.jpg",
                 },
-              ].map((h) => (
-                <SoftCard key={h.title} className="overflow-hidden flex h-full flex-col">
-                  <div className="relative h-48 w-full">
-                    <Image
-                      src={h.img}
-                      alt={h.title}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-1 flex-col p-6">
-                    <div className="text-base font-semibold">{h.title}</div>
-                    <p className="mt-2 text-sm leading-relaxed text-gray-600">{h.desc}</p>
-                  </div>
-                </SoftCard>
+              ].map((h, i) => (
+                <Reveal key={h.title} delay={0.06 + i * 0.05}>
+                  <SoftCard className="overflow-hidden flex h-full flex-col">
+                    <div className="relative h-48 w-full">
+                      <Image src={h.img} alt={h.title} fill className="object-cover" />
+                    </div>
+                    <div className="flex flex-1 flex-col p-6">
+                      <div className="text-base font-semibold">{h.title}</div>
+                      <p className="mt-2 text-sm leading-relaxed text-gray-600">{h.desc}</p>
+                    </div>
+                  </SoftCard>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -431,42 +545,43 @@ export default function Page() {
               desc="千葉県内外から選りすぐりのブルワリーが参加。ビアスタイルの多様さも魅力です。"
             />
 
-            <SoftCard className="mt-10 overflow-hidden">
-              <div className="w-full bg-gray-50 p-4 sm:p-6">
-                <Image
-                  src="/images/brewery_all.png"
-                  alt="出店ブルワリー"
-                  width={1200}
-                  height={1200}
-                  className="mx-auto h-auto w-full max-w-[900px] object-contain"
-                />
-              </div>
-              <div className="p-7">
-                <div className="text-sm font-semibold">出店ブルワリー（順不同）</div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {BREWERIES.map((b) => (
-                    <div
-                      key={b.name}
-                      className="rounded-2xl border border-gray-200 bg-white px-4 py-3"
-                    >
-                      <div className="text-sm font-semibold">{b.name}</div>
-                      <div className="mt-1 text-xs text-gray-500">{b.area}</div>
-
-                      {b.days && (
-                        <div
-                          className={
-                            "mt-2 text-[11px] font-semibold " +
-                            (b.days === "両日" ? "text-gray-500" : "text-red-600")
-                          }
-                        >
-                          {b.days === "両日" ? "両日出店" : `※${b.days}`}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+            <Reveal delay={0.08}>
+              <SoftCard className="mt-10 overflow-hidden">
+                <div className="relative w-full aspect-square bg-gray-50 p-6">
+                  <Image
+                    src="/images/brewery_all.png"
+                    alt="出店ブルワリー"
+                    fill
+                    className="object-contain"
+                  />
                 </div>
-              </div>
-            </SoftCard>
+                <div className="p-7">
+                  <div className="text-sm font-semibold">出店ブルワリー（順不同）</div>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {BREWERIES.map((b) => (
+                      <div
+                        key={b.name}
+                        className="rounded-2xl border border-gray-200 bg-white px-4 py-3"
+                      >
+                        <div className="text-sm font-semibold">{b.name}</div>
+                        <div className="mt-1 text-xs text-gray-500">{b.area}</div>
+
+                        {b.days && (
+                          <div
+                            className={
+                              "mt-2 text-[11px] font-semibold " +
+                              (b.days === "両日" ? "text-gray-500" : "text-red-600")
+                            }
+                          >
+                            {b.days === "両日" ? "両日出店" : `※${b.days}`}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </SoftCard>
+            </Reveal>
           </div>
         </section>
 
@@ -478,49 +593,51 @@ export default function Page() {
               desc="ビールと相性抜群のこだわりフードが集結。食べ歩きもおすすめ。"
             />
 
-            <SoftCard className="mt-10 overflow-hidden">
-              <div className="relative w-full bg-white">
-                <Image
-                  src="/images/food_all.png"
-                  alt="フード出店"
-                  width={800}
-                  height={1200}
-                  className="w-full h-auto object-contain rounded-2xl"
-                />
-              </div>
-              <div className="p-7">
-                <div className="text-sm font-semibold">出店フード</div>
-                <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {FOODS.map((f) => (
-                    <div
-                      key={f.name}
-                      className="rounded-2xl border border-gray-200 bg-white px-4 py-3"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="text-sm font-semibold">{f.name}</div>
-                        {f.kind ? (
-                          <span className="rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[11px] font-semibold text-gray-600">
-                            {f.kind}
-                          </span>
-                        ) : null}
-                      </div>
-                      <div className="mt-1 text-xs text-gray-500">{f.menu}</div>
-
-                      {f.days && (
-                        <div
-                          className={
-                            "mt-2 text-[11px] font-semibold " +
-                            (f.days === "両日" ? "text-gray-500" : "text-red-600")
-                          }
-                        >
-                          {f.days === "両日" ? "両日出店" : `※${f.days}`}
-                        </div>
-                      )}
-                    </div>
-                  ))}
+            <Reveal delay={0.08}>
+              <SoftCard className="mt-10 overflow-hidden">
+                <div className="relative w-full bg-white">
+                  <Image
+                    src="/images/food_all.png"
+                    alt="フード出店"
+                    width={800}
+                    height={1200}
+                    className="w-full h-auto object-contain rounded-2xl"
+                  />
                 </div>
-              </div>
-            </SoftCard>
+                <div className="p-7">
+                  <div className="text-sm font-semibold">出店フード</div>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {FOODS.map((f) => (
+                      <div
+                        key={f.name}
+                        className="rounded-2xl border border-gray-200 bg-white px-4 py-3"
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="text-sm font-semibold">{f.name}</div>
+                          {f.kind ? (
+                            <span className="rounded-full border border-gray-200 bg-gray-50 px-2 py-0.5 text-[11px] font-semibold text-gray-600">
+                              {f.kind}
+                            </span>
+                          ) : null}
+                        </div>
+                        <div className="mt-1 text-xs text-gray-500">{f.menu}</div>
+
+                        {f.days && (
+                          <div
+                            className={
+                              "mt-2 text-[11px] font-semibold " +
+                              (f.days === "両日" ? "text-gray-500" : "text-red-600")
+                            }
+                          >
+                            {f.days === "両日" ? "両日出店" : `※${f.days}`}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </SoftCard>
+            </Reveal>
           </div>
         </section>
 
@@ -536,52 +653,54 @@ export default function Page() {
             />
 
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
-              <SoftCard className="overflow-hidden">
-                <div className="relative h-56 w-full">
-                  <Image
-                    src="/images/pr1.png"
-                    alt="ブルワリーキーホルダー ガラポン"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="text-sm font-semibold">
-                    ブルワリーキーホルダー ガラポン
+              <Reveal>
+                <SoftCard className="overflow-hidden">
+                  <div className="relative h-56 w-full">
+                    <Image
+                      src="/images/pr1.jpg"
+                      alt="ブルワリーキーホルダー ガラポン"
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-600">
-                    出店ブルワリーのオリジナルキーホルダーが当たるガラポン企画。
-                    どのブルワリーが当たるかは運次第。コンプリートを目指して挑戦！
-                  </p>
-                  <div className="mt-4 text-xs text-gray-500">
-                    ※数量限定／なくなり次第終了
+                  <div className="p-6">
+                    <div className="text-sm font-semibold">
+                      ブルワリーキーホルダー ガラポン
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                      出店ブルワリーのオリジナルキーホルダーが当たるガラポン企画。
+                      どのブルワリーが当たるかは運次第。コンプリートを目指して挑戦！
+                    </p>
+                    <div className="mt-4 text-xs text-gray-500">
+                      ※数量限定／なくなり次第終了
+                    </div>
                   </div>
-                </div>
-              </SoftCard>
+                </SoftCard>
+              </Reveal>
 
-              <SoftCard className="overflow-hidden">
-                <div className="relative h-56 w-full">
-                  <Image
-                    src="/images/cup.png"
-                    alt="イベントグッズ販売"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <div className="text-sm font-semibold">オフィシャルグッズ販売</div>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-600">
-                    チバビアフェス限定グッズを販売。
-                    リユースカップ、ステッカー、アパレルなど、
-                    ここでしか手に入らないアイテムをご用意しています。
-                  </p>
-                  <div className="mt-4 text-xs text-gray-500">
-                    ※数量限定アイテムあり
+              <Reveal delay={0.06}>
+                <SoftCard className="overflow-hidden">
+                  <div className="relative h-56 w-full">
+                    <Image
+                      src="/images/cup.png"
+                      alt="イベントグッズ販売"
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                </div>
-              </SoftCard>
+                  <div className="p-6">
+                    <div className="text-sm font-semibold">オフィシャルグッズ販売</div>
+                    <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                      チバビアフェス限定グッズを販売。
+                      リユースカップ、ステッカー、アパレルなど、
+                      ここでしか手に入らないアイテムをご用意しています。
+                    </p>
+                    <div className="mt-4 text-xs text-gray-500">
+                      ※数量限定アイテムあり
+                    </div>
+                  </div>
+                </SoftCard>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -595,38 +714,36 @@ export default function Page() {
             />
 
             <div className="mt-10 grid gap-6 lg:grid-cols-2">
-              <SoftCard className="p-7">
-                <div className="text-sm font-semibold">会場</div>
-                <p className="mt-3 text-sm leading-relaxed text-gray-600">{EVENT.venue}</p>
-                <div className="mt-6 text-sm font-semibold">最寄り</div>
-                <p className="mt-2 text-sm leading-relaxed text-gray-600">
-                  {EVENT.accessShort}
-                </p>
+              <Reveal>
+                <SoftCard className="p-7">
+                  <div className="text-sm font-semibold">会場</div>
+                  <p className="mt-3 text-sm leading-relaxed text-gray-600">{EVENT.venue}</p>
+                  <div className="mt-6 text-sm font-semibold">最寄り</div>
+                  <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                    {EVENT.accessShort}
+                  </p>
 
-                <div className="mt-6">
-                  <a
-                    href={EVENT.mapUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => sendGAEvent("event", "click_access_map")}
-                    className="inline-flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 hover:bg-gray-50"
-                  >
-                    Google Mapsで開く
-                  </a>
-                </div>
-              </SoftCard>
+                  <div className="mt-6">
+                    <a
+                      href={EVENT.mapUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => sendGAEvent("event", "click_access_map")}
+                      className="inline-flex items-center justify-center rounded-2xl border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-900 hover:bg-gray-50"
+                    >
+                      Google Mapsで開く
+                    </a>
+                  </div>
+                </SoftCard>
+              </Reveal>
 
-              <SoftCard className="overflow-hidden">
-                <div className="relative h-80 w-full">
-                  <Image
-                    src="/images/pr2.png"
-                    alt="さんばしひろば"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-              </SoftCard>
+              <Reveal delay={0.06}>
+                <SoftCard className="overflow-hidden">
+                  <div className="relative h-80 w-full">
+                    <Image src="/images/pr2.jpg" alt="さんばしひろば" fill className="object-cover" />
+                  </div>
+                </SoftCard>
+              </Reveal>
             </div>
           </div>
         </section>
@@ -647,10 +764,12 @@ export default function Page() {
                 "天候等により内容が変更・中止となる場合があります（最新情報はSNSで告知）。",
                 "芝生・海辺の会場です。歩きやすい靴がおすすめです。",
                 "ゴミの分別にご協力ください。",
-              ].map((t) => (
-                <SoftCard key={t} className="p-6">
-                  <p className="text-sm leading-relaxed text-gray-700">{t}</p>
-                </SoftCard>
+              ].map((t, i) => (
+                <Reveal key={t} delay={0.04 + i * 0.03}>
+                  <SoftCard className="p-6">
+                    <p className="text-sm leading-relaxed text-gray-700">{t}</p>
+                  </SoftCard>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -661,11 +780,13 @@ export default function Page() {
             <SectionHeader kicker="FAQ" title="よくある質問" />
 
             <div className="mt-10 space-y-4">
-              {FAQ.map((item) => (
-                <SoftCard key={item.q} className="p-7">
-                  <div className="text-base font-semibold">{item.q}</div>
-                  <p className="mt-3 text-sm leading-relaxed text-gray-600">{item.a}</p>
-                </SoftCard>
+              {FAQ.map((item, i) => (
+                <Reveal key={item.q} delay={0.06 + i * 0.05}>
+                  <SoftCard className="p-7">
+                    <div className="text-base font-semibold">{item.q}</div>
+                    <p className="mt-3 text-sm leading-relaxed text-gray-600">{item.a}</p>
+                  </SoftCard>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -681,35 +802,39 @@ export default function Page() {
             />
 
             <div className="mt-10 mx-auto max-w-3xl space-y-6">
-              <SoftCard className="p-8 sm:p-10 text-center min-h-[220px] flex flex-col items-center justify-center">
-                <div className="text-2xl font-semibold">お問い合わせフォーム</div>
+              <Reveal>
+                <SoftCard className="p-8 sm:p-10 text-center min-h-[220px] flex flex-col items-center justify-center">
+                  <div className="text-2xl font-semibold">お問い合わせフォーム</div>
 
-                <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed max-w-xl">
-                  出店・協賛・取材・来場に関するお問い合わせは、
-                  専用フォームよりお送りください。
-                </p>
+                  <p className="mt-4 text-sm sm:text-base text-gray-600 leading-relaxed max-w-xl">
+                    出店・協賛・取材・来場に関するお問い合わせは、
+                    専用フォームよりお送りください。
+                  </p>
 
-                <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSeH8nUKrjY2OYVQjGzwZb0HuAnNdvpcSuAkkvblBvz8G9KIHg/viewform?usp=dialog"
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => sendGAEvent("event", "click_contact_form")}
-                  className="mt-8 inline-flex items-center justify-center rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
-                >
-                  フォームを開く
-                </a>
-              </SoftCard>
+                  <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSdYEDZ_wxC2EhMp_U1o84stQO7LFzD9uhTR1yF-UrMCITAxcg/viewform?usp=publish-editor"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => sendGAEvent("event", "click_contact_form")}
+                    className="mt-8 inline-flex items-center justify-center rounded-2xl bg-neutral-900 px-6 py-3 text-sm font-semibold text-white hover:bg-neutral-800"
+                  >
+                    フォームを開く
+                  </a>
+                </SoftCard>
+              </Reveal>
 
-              <SoftCard className="p-8 sm:p-10 text-center min-h-[220px] flex flex-col items-center justify-center">
-                <div className="text-2xl font-semibold">運営情報</div>
+              <Reveal delay={0.12}>
+                <SoftCard className="p-8 sm:p-10 text-center min-h-[220px] flex flex-col items-center justify-center">
+                  <div className="text-2xl font-semibold">運営情報</div>
 
-                <dl className="mt-6 space-y-2">
-                  <div>
-                    <dt className="text-sm text-gray-500">主催</dt>
-                    <dd className="mt-1 text-lg font-semibold">{EVENT.organizer}</dd>
-                  </div>
-                </dl>
-              </SoftCard>
+                  <dl className="mt-6 space-y-2">
+                    <div>
+                      <dt className="text-sm text-gray-500">主催</dt>
+                      <dd className="mt-1 text-lg font-semibold">{EVENT.organizer}</dd>
+                    </div>
+                  </dl>
+                </SoftCard>
+              </Reveal>
             </div>
           </div>
         </section>
