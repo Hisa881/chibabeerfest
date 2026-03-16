@@ -246,36 +246,40 @@ function HeroCarousel({
 }
 /* ========================================
    セクション見出し
+   - 全て中央寄せ
+   - サブタイトル余白調整
+   - タイトルだけスクロール時フェード
 ======================================== */
 function SectionHeader({
   kicker,
   title,
   desc,
-  center,
 }: {
   kicker: string;
   title: string;
   desc?: string;
-  center?: boolean;
 }) {
   return (
-    <div className={center ? "text-center" : ""}>
+    <div className="text-center">
       <Reveal>
-        <div className="text-xs tracking-[0.18em] text-gray-500">{kicker}</div>
+        <div className="text-[11px] sm:text-xs tracking-[0.22em] text-gray-500">
+          {kicker}
+        </div>
       </Reveal>
 
-      <Reveal delay={0.06}>
-        <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h2>
-      </Reveal>
+      <motion.h2
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="mt-3 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight"
+      >
+        {title}
+      </motion.h2>
 
       {desc ? (
-        <Reveal delay={0.12}>
-          <p
-            className={
-              "mt-5 text-sm sm:text-base leading-relaxed text-gray-600 " +
-              (center ? "mx-auto max-w-2xl" : "")
-            }
-          >
+        <Reveal delay={0.08}>
+          <p className="mx-auto mt-4 sm:mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-gray-600">
             {desc}
           </p>
         </Reveal>
