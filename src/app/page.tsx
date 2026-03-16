@@ -315,49 +315,75 @@ export default function Page() {
       <div className="relative">
         <AnchorRow />
 
-        <header className="relative">
-          <div className="relative h-[72vh] min-h-[520px] w-full overflow-hidden">
-            <HeroCarousel images={HERO_IMAGES} intervalMs={5000} />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+<header className="relative isolate min-h-[100svh] overflow-hidden">
+  {/* 固定背景 */}
+  <div className="fixed inset-0 -z-30">
+    <Image
+      src="/images/hero-bg.jpg"
+      alt="Chiba Beer Fest background"
+      fill
+      priority
+      className="object-cover"
+    />
+  </div>
+
+  {/* 背景の暗幕 */}
+  <div className="absolute inset-0 -z-20 bg-black/45" />
+
+  {/* スマホで見える中央の更新対象 */}
+  <div className="relative z-10 mx-auto flex min-h-[100svh] w-full items-end">
+    <div className="w-full pb-10 sm:pb-14">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto w-full max-w-[420px] sm:mx-0">
+          {/* 中央だけ差し替えやすい画像 */}
+          <div className="relative mx-auto aspect-[3/4] w-[78vw] max-w-[340px] overflow-hidden rounded-2xl bg-white shadow-2xl sm:mx-0">
+            <Image
+              src="/images/hero-mobile-main.jpg"
+              alt="Chiba Beer Fest main visual"
+              fill
+              priority
+              className="object-cover"
+            />
           </div>
 
-          <div className="absolute inset-0 flex items-end">
-            <div className="w-full pb-10 sm:pb-14">
-              <div className="mx-auto max-w-6xl px-6">
-                <div className="max-w-xl text-white">
-                  <h1 className="mt-3 text-3xl sm:text-5xl font-semibold leading-tight">
-                    CHIBA BEERFEST
-                  </h1>
-                  <div className="text-xs tracking-[0.18em] opacity-90">
-                    ALL YOU NEED IS BEER!
-                  </div>
+          {/* テキスト */}
+          <div className="mt-6 text-left text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]">
+            <h1 className="mt-3 text-3xl sm:text-5xl font-semibold leading-tight">
+              CHIBA BEERFEST
+            </h1>
 
-                  <p className="mt-3 text-sm sm:text-base opacity-95">
-                    2026年4月25日（土）・26日（日）
-                  </p>
-
-                  <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                    <a
-                      href="#breweries"
-                      onClick={() => sendGAEvent("event", "click_breweries_hero")}
-                      className="inline-flex items-center justify-center rounded-2xl bg-white/95 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-white"
-                    >
-                      ブルワリーを見る
-                    </a>
-
-                    <a
-                      href="#access"
-                      onClick={() => sendGAEvent("event", "click_access_hero")}
-                      className="inline-flex items-center justify-center rounded-2xl border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/15"
-                    >
-                      アクセス
-                    </a>
-                  </div>
-                </div>
-              </div>
+            <div className="text-xs tracking-[0.18em] opacity-90">
+              ALL YOU NEED IS BEER!
             </div>
+
+            <p className="mt-3 text-sm sm:text-base opacity-95">
+              2026年4月25日（土）・26日（日）
+            </p>
           </div>
-        </header>
+
+          {/* ボタン */}
+          <div className="mt-6 flex flex-col sm:flex-row gap-3">
+            <a
+              href="#breweries"
+              onClick={() => sendGAEvent("event", "click_breweries_hero")}
+              className="inline-flex items-center justify-center rounded-2xl bg-white/95 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-white"
+            >
+              ブルワリーを見る
+            </a>
+
+            <a
+              href="#access"
+              onClick={() => sendGAEvent("event", "click_access_hero")}
+              className="inline-flex items-center justify-center rounded-2xl border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/15"
+            >
+              アクセス
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
 
         <section id="about" className="py-16 sm:py-20 bg-white">
           <div className="mx-auto max-w-6xl px-6">
