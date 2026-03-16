@@ -399,37 +399,36 @@ export default function Page() {
           <div className="absolute inset-0 flex items-end">
             <div className="w-full pb-10 sm:pb-14">
               <div className="mx-auto max-w-6xl px-6">
-                <div className="max-w-xl text-white">
-                  <h1 className="mt-3 text-3xl sm:text-5xl font-semibold leading-tight">
-                    CHIBA BEERFEST
-                  </h1>
+<div className="max-w-xl text-white">
+  <div className="w-full max-w-[260px] sm:max-w-[420px]">
+    <Image
+      src="/images/hero_title.png"
+      alt="CHIBA BEERFEST ALL YOU NEED IS BEER! 2026年4月25日（土）・26日（日）"
+      width={1200}
+      height={520}
+      priority
+      className="h-auto w-full"
+    />
+  </div>
 
-                  <div className="text-xs tracking-[0.18em] opacity-90">
-                    ALL YOU NEED IS BEER!
-                  </div>
+  <div className="mt-6 flex flex-col sm:flex-row gap-3">
+    <a
+      href="#breweries"
+      onClick={() => sendGAEvent("event", "click_breweries_hero")}
+      className="inline-flex items-center justify-center rounded-2xl bg-white/95 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-white"
+    >
+      ブルワリーを見る
+    </a>
 
-                  <p className="mt-3 text-sm sm:text-base opacity-95">
-                    2026年4月25日（土）・26日（日）
-                  </p>
-
-                  <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                    <a
-                      href="#breweries"
-                      onClick={() => sendGAEvent("event", "click_breweries_hero")}
-                      className="inline-flex items-center justify-center rounded-2xl bg-white/95 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-white"
-                    >
-                      ブルワリーを見る
-                    </a>
-
-                    <a
-                      href="#access"
-                      onClick={() => sendGAEvent("event", "click_access_hero")}
-                      className="inline-flex items-center justify-center rounded-2xl border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/15"
-                    >
-                      アクセス
-                    </a>
-                  </div>
-                </div>
+    <a
+      href="#access"
+      onClick={() => sendGAEvent("event", "click_access_hero")}
+      className="inline-flex items-center justify-center rounded-2xl border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/15"
+    >
+      アクセス
+    </a>
+  </div>
+</div>
               </div>
             </div>
           </div>
