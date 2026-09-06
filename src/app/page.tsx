@@ -5,10 +5,8 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Reveal, HoverCard } from "../components/Reveal";
 import { sendGAEvent } from "@next/third-parties/google";
+import { FoamDivider, FoamDividerOnImage } from "../components/FoamDivider";
 
-/* ========================================
-   イベント基本情報
-======================================== */
 const EVENT = {
   title: "チバビアフェスト",
   catch: "ALL YOU NEED IS BEER!",
@@ -28,22 +26,8 @@ const EVENT = {
     "https://www.google.com/maps?q=%E3%81%95%E3%82%93%E3%81%B0%E3%81%97%E3%81%B2%E3%82%8D%E3%81%B0&output=embed",
 };
 
-/* ========================================
-   スマホ用ヒーローカルーセル画像
-   ※ public/images に配置
-   - hero_sp1.jpg
-   - hero_sp2.jpg
-   - hero_sp3.jpg
-======================================== */
-const HERO_IMAGES = [
-  { src: "/images/hero_sp1.jpg", alt: "HERO1" },
-  { src: "/images/hero_sp2.jpg", alt: "HERO2" },
-  { src: "/images/hero_sp3.jpg", alt: "HERO3" },
-];
+const HERO_IMAGES = [{ src: "/images/hero_1.png", alt: "HERO1" }];
 
-/* ========================================
-   セクションカラー設定
-======================================== */
 const SECTION_COLORS = {
   breweries: {
     cardBg: "bg-[#fff4db]",
@@ -62,25 +46,23 @@ const SECTION_COLORS = {
   },
 };
 
-/* ========================================
-   データ型
-======================================== */
+// セクション継ぎ目の泡画像（色・水玉テクスチャは画像側に焼き込み済み）
+const FOAM = {
+  heroToWhite: "/images/foam-hero-to-white.svg",
+  whiteToGray: "/images/foam-white-to-gray.svg",
+  grayToWhite: "/images/foam-gray-to-white.svg",
+  whiteToCream: "/images/foam-white-to-cream.svg",
+  creamToPink: "/images/foam-cream-to-pink.svg",
+  pinkToBlue: "/images/foam-pink-to-blue.svg",
+  blueToWhite: "/images/foam-blue-to-white.svg",
+};
+
 type Brewery = {
   name: string;
   area: string;
   days?: "両日" | "4/25(土)のみ" | "4/26(日)のみ";
 };
 
-type Food = {
-  name: string;
-  menu: string;
-  kind?: "キッチンカー" | "テント";
-  days?: "両日" | "4/25(土)のみ" | "4/26(日)のみ";
-};
-
-/* ========================================
-   ブルワリーデータ
-======================================== */
 const BREWERIES: Brewery[] = [
   { name: "潮風ブルーラボ", area: "千葉県千葉市", days: "両日" },
   { name: "秩父麦酒", area: "埼玉県秩父市", days: "両日" },
@@ -104,9 +86,13 @@ const BREWERIES: Brewery[] = [
   { name: "海岸醸造", area: "千葉県南房総市", days: "両日" },
 ];
 
-/* ========================================
-   フードデータ
-======================================== */
+type Food = {
+  name: string;
+  menu: string;
+  kind?: "キッチンカー" | "テント";
+  days?: "両日" | "4/25(土)のみ" | "4/26(日)のみ";
+};
+
 const FOODS: Food[] = [
   { kind: "キッチンカー", name: "おだやかのむこう", menu: "焼き芋", days: "両日" },
   { kind: "キッチンカー", name: "おだやかのむこう2号", menu: "フリッツポテト", days: "両日" },
@@ -122,9 +108,6 @@ const FOODS: Food[] = [
   { kind: "テント", name: "entacos", menu: "タコス", days: "両日" },
 ];
 
-/* ========================================
-   FAQデータ
-======================================== */
 const FAQ = [
   { q: "入場料はかかりますか？", a: EVENT.price },
   { q: "雨でも開催しますか？", a: EVENT.weatherNote },
@@ -135,9 +118,6 @@ const FAQ = [
   },
 ];
 
-/* ========================================
-   共通カードUI
-======================================== */
 function SoftCard({
   children,
   className,
@@ -157,12 +137,9 @@ function SoftCard({
   );
 }
 
-/* ========================================
-   スマホ用ヒーローカルーセル
-======================================== */
 function HeroCarousel({
   images,
-  intervalMs = 3500,
+  intervalMs = 5000,
 }: {
   images: { src: string; alt: string }[];
   intervalMs?: number;
@@ -174,6 +151,10 @@ function HeroCarousel({
 
   const next = React.useCallback(() => {
     setIndex((i) => (i + 1) % count);
+  }, [count]);
+
+  const prev = React.useCallback(() => {
+    setIndex((i) => (i - 1 + count) % count);
   }, [count]);
 
   React.useEffect(() => {
@@ -199,7 +180,7 @@ function HeroCarousel({
           initial={{ opacity: 0, scale: 1.02 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.01 }}
-          transition={{ duration: 0.45, ease: "easeOut" }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.18}
@@ -207,9 +188,7 @@ function HeroCarousel({
             const x = info.offset.x;
             const v = info.velocity.x;
             if (x < -60 || v < -500) next();
-            if (x > 60 || v > 500) {
-              setIndex((i) => (i - 1 + count) % count);
-            }
+            if (x > 60 || v > 500) prev();
           }}
         >
           <Image
@@ -217,69 +196,79 @@ function HeroCarousel({
             alt={current.alt}
             fill
             priority={index === 0}
-            sizes="100vw"
             className="object-cover"
           />
         </motion.div>
       </AnimatePresence>
 
       {count > 1 && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
-          {images.map((img, i) => (
-            <button
-              key={img.src}
-              type="button"
-              aria-label={`スライド ${i + 1}`}
-              onClick={() => setIndex(i)}
-              className={[
-                "h-2.5 w-2.5 rounded-full border",
-                i === index
-                  ? "bg-neutral-900 border-neutral-900"
-                  : "bg-white/80 border-gray-300 hover:bg-white",
-              ].join(" ")}
-            />
-          ))}
-        </div>
+        <>
+          <button
+            type="button"
+            aria-label="前の画像"
+            onClick={prev}
+            className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/85 backdrop-blur px-3 py-2 text-sm font-semibold shadow-sm border border-gray-200 hover:bg-white"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            aria-label="次の画像"
+            onClick={next}
+            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/85 backdrop-blur px-3 py-2 text-sm font-semibold shadow-sm border border-gray-200 hover:bg-white"
+          >
+            →
+          </button>
+
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+            {images.map((img, i) => (
+              <button
+                key={img.src}
+                type="button"
+                aria-label={`スライド ${i + 1}`}
+                onClick={() => setIndex(i)}
+                className={[
+                  "h-2.5 w-2.5 rounded-full border",
+                  i === index
+                    ? "bg-neutral-900 border-neutral-900"
+                    : "bg-white/80 border-gray-300 hover:bg-white",
+                ].join(" ")}
+              />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
 }
-/* ========================================
-   セクション見出し
-   - 全て中央寄せ
-   - サブタイトル余白調整
-   - タイトルだけスクロール時フェード
-======================================== */
+
 function SectionHeader({
   kicker,
   title,
   desc,
+  center,
 }: {
   kicker: string;
   title: string;
   desc?: string;
+  center?: boolean;
 }) {
   return (
-    <div className="text-center">
+    <div className={center ? "text-center" : ""}>
       <Reveal>
-        <div className="text-[11px] sm:text-xs tracking-[0.22em] text-gray-500">
-          {kicker}
-        </div>
+        <div className="text-xs tracking-[0.18em] text-gray-500">{kicker}</div>
       </Reveal>
-
-      <motion.h2
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="mt-3 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight"
-      >
-        {title}
-      </motion.h2>
-
+      <Reveal delay={0.06}>
+        <h2 className="mt-3 text-2xl sm:text-3xl font-semibold tracking-tight">{title}</h2>
+      </Reveal>
       {desc ? (
-        <Reveal delay={0.08}>
-          <p className="mx-auto mt-4 sm:mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-gray-600">
+        <Reveal delay={0.12}>
+          <p
+            className={
+              "mt-5 text-sm sm:text-base leading-relaxed text-gray-600 " +
+              (center ? "mx-auto max-w-2xl" : "")
+            }
+          >
             {desc}
           </p>
         </Reveal>
@@ -288,9 +277,6 @@ function SectionHeader({
   );
 }
 
-/* ========================================
-   上部固定アンカーナビ
-======================================== */
 function AnchorRow() {
   const items = [
     { label: "概要", href: "#about" },
@@ -318,7 +304,6 @@ function AnchorRow() {
               {i.label}
             </a>
           ))}
-
           <div className="ml-auto hidden sm:flex items-center gap-2">
             <a
               href={EVENT.instagram}
@@ -336,99 +321,58 @@ function AnchorRow() {
   );
 }
 
-/* ========================================
-   メインページ
-======================================== */
 export default function Page() {
   return (
     <main className="relative bg-white text-neutral-900">
       <div className="relative">
-        {/* ================================
-            上部固定ナビ
-        ================================= */}
         <AnchorRow />
 
-        {/* ================================
-            ヘッダー / ヒーロー
-            - スマホ：カルーセル
-            - PC：固定画像
-        ================================= */}
         <header className="relative">
-          <div className="relative h-[60vh] min-h-[420px] w-full overflow-hidden sm:h-[72vh] sm:min-h-[520px]">
-            {/* スマホ：カルーセル */}
-            <div className="absolute inset-0 sm:hidden">
-              <HeroCarousel images={HERO_IMAGES} intervalMs={3500} />
-            </div>
-
-            {/* PC：固定画像 */}
-            <div className="absolute inset-0 hidden sm:block">
-              <Image
-                src="/images/hero_pc.jpg"
-                alt="CHIBA BEERFEST"
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover"
-              />
-            </div>
-
-            {/* オーバーレイ */}
+          <div className="relative h-[72vh] min-h-[520px] w-full overflow-hidden">
+            <HeroCarousel images={HERO_IMAGES} intervalMs={5000} />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
+            {/* ヒーロー画像 → 白いaboutセクションへの泡の切り替え */}
+            <FoamDividerOnImage src={FOAM.heroToWhite} />
           </div>
 
-          {/* ヒーローテキスト */}
           <div className="absolute inset-0 flex items-end">
             <div className="w-full pb-10 sm:pb-14">
               <div className="mx-auto max-w-6xl px-6">
-<div className="max-w-xl text-white">
-  <div className="w-full max-w-[260px] sm:max-w-[420px]">
-    <Image
-      src="/images/hero_title.png"
-      alt="CHIBA BEERFEST ALL YOU NEED IS BEER! 2026年4月25日（土）・26日（日）"
-      width={1200}
-      height={520}
-      priority
-      className="h-auto w-full"
-    />
-  </div>
+                <div className="max-w-xl text-white">
+                  <h1 className="mt-3 text-3xl sm:text-5xl font-semibold leading-tight">
+                    CHIBA BEERFEST
+                  </h1>
+                  <div className="text-xs tracking-[0.18em] opacity-90">
+                    ALL YOU NEED IS BEER!
+                  </div>
 
-  <div className="mt-6 flex flex-col sm:flex-row gap-3">
-    <a
-      href="#breweries"
-      onClick={() => sendGAEvent("event", "click_breweries_hero")}
-      className="inline-flex items-center justify-center rounded-2xl bg-white/95 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-white"
-    >
-      ブルワリーを見る
-    </a>
+                  <p className="mt-3 text-sm sm:text-base opacity-95">
+                    2026年4月25日（土）・26日（日）
+                  </p>
 
-    <a
-      href="#access"
-      onClick={() => sendGAEvent("event", "click_access_hero")}
-      className="inline-flex items-center justify-center rounded-2xl border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/15"
-    >
-      アクセス
-    </a>
-  </div>
-</div>
+                  <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                    <a
+                      href="#breweries"
+                      onClick={() => sendGAEvent("event", "click_breweries_hero")}
+                      className="inline-flex items-center justify-center rounded-2xl bg-white/95 px-6 py-3 text-sm font-semibold text-neutral-900 hover:bg-white"
+                    >
+                      ブルワリーを見る
+                    </a>
+
+                    <a
+                      href="#access"
+                      onClick={() => sendGAEvent("event", "click_access_hero")}
+                      className="inline-flex items-center justify-center rounded-2xl border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/15"
+                    >
+                      アクセス
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* スクロール誘導 */}
-          <a
-            href="#about"
-            onClick={() => sendGAEvent("event", "click_scroll_hero")}
-            className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center text-white/90 hover:text-white sm:bottom-6"
-            aria-label="概要までスクロール"
-          >
-            <span className="text-[10px] font-semibold tracking-[0.28em]">SCROLL</span>
-            <span className="mt-1 text-xl leading-none animate-bounce">⌄</span>
-          </a>
         </header>
 
-        {/* ================================
-            ABOUT
-        ================================= */}
         <section id="about" className="py-16 sm:py-20 bg-white">
           <div className="mx-auto max-w-6xl px-6">
             <SectionHeader
@@ -446,11 +390,14 @@ export default function Page() {
                   ${SECTION_COLORS.breweries.cardBg} ${SECTION_COLORS.breweries.cardBorder}`}
                 >
                   <div className="text-2xl">🍺</div>
+
                   <h3 className="mt-4 text-xl font-semibold">クラフトビール</h3>
+
                   <p className="mt-3 text-sm text-gray-700 leading-relaxed">
                     千葉県内外からブルワリーが集結。
                     つくり手と飲み手がつながる“特別な一杯”を。
                   </p>
+
                   <span className="mt-auto pt-6 text-sm font-semibold">
                     ブルワリーを見る →
                   </span>
@@ -465,11 +412,14 @@ export default function Page() {
                   ${SECTION_COLORS.food.cardBg} ${SECTION_COLORS.food.cardBorder}`}
                 >
                   <div className="text-2xl">🍴</div>
+
                   <h3 className="mt-4 text-xl font-semibold">フード</h3>
+
                   <p className="mt-3 text-sm text-gray-700 leading-relaxed">
                     ビールに合うこだわりフードが充実。
                     キッチンカー＆テントで食べ歩きも楽しい。
                   </p>
+
                   <span className="mt-auto pt-6 text-sm font-semibold">
                     フードを見る →
                   </span>
@@ -484,11 +434,14 @@ export default function Page() {
                   ${SECTION_COLORS.contents.cardBg} ${SECTION_COLORS.contents.cardBorder}`}
                 >
                   <div className="text-2xl">🎨</div>
+
                   <h3 className="mt-4 text-xl font-semibold">体験コンテンツ</h3>
+
                   <p className="mt-3 text-sm text-gray-700 leading-relaxed">
                     ボディペイントなど、
                     家族で楽しめる体験型ブースも用意しています。
                   </p>
+
                   <span className="mt-auto pt-6 text-sm font-semibold">
                     コンテンツを見る →
                   </span>
@@ -498,9 +451,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ================================
-            INFORMATION
-        ================================= */}
+        <FoamDivider src={FOAM.whiteToGray} />
+
         <section id="info" className="py-14 sm:py-20 bg-gray-50">
           <div className="mx-auto max-w-6xl px-6">
             <SectionHeader
@@ -550,9 +502,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ================================
-            HIGHLIGHTS
-        ================================= */}
+        <FoamDivider src={FOAM.grayToWhite} />
+
         <section id="highlights" className="py-14 sm:py-20">
           <div className="mx-auto max-w-6xl px-6">
             <SectionHeader
@@ -588,13 +539,7 @@ export default function Page() {
                 <Reveal key={h.title} delay={0.06 + i * 0.05}>
                   <SoftCard className="overflow-hidden flex h-full flex-col">
                     <div className="relative h-48 w-full">
-                      <Image
-                        src={h.img}
-                        alt={h.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        className="object-cover"
-                      />
+                      <Image src={h.img} alt={h.title} fill className="object-cover" />
                     </div>
                     <div className="flex flex-1 flex-col p-6">
                       <div className="text-base font-semibold">{h.title}</div>
@@ -607,9 +552,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ================================
-            BREWERIES
-        ================================= */}
+        <FoamDivider src={FOAM.whiteToCream} />
+
         <section
           id="breweries"
           className={`py-14 sm:py-20 ${SECTION_COLORS.breweries.sectionBg}`}
@@ -628,11 +572,9 @@ export default function Page() {
                     src="/images/brewery_all.png"
                     alt="出店ブルワリー"
                     fill
-                    sizes="(max-width: 768px) 100vw, 900px"
                     className="object-contain"
                   />
                 </div>
-
                 <div className="p-7">
                   <div className="text-sm font-semibold">出店ブルワリー（順不同）</div>
                   <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -663,9 +605,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ================================
-            FOOD
-        ================================= */}
+        <FoamDivider src={FOAM.creamToPink} />
+
         <section id="food" className={`py-14 sm:py-20 ${SECTION_COLORS.food.sectionBg}`}>
           <div className="mx-auto max-w-6xl px-6">
             <SectionHeader
@@ -685,7 +626,6 @@ export default function Page() {
                     className="w-full h-auto object-contain rounded-2xl"
                   />
                 </div>
-
                 <div className="p-7">
                   <div className="text-sm font-semibold">出店フード</div>
                   <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -702,7 +642,6 @@ export default function Page() {
                             </span>
                           ) : null}
                         </div>
-
                         <div className="mt-1 text-xs text-gray-500">{f.menu}</div>
 
                         {f.days && (
@@ -724,9 +663,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ================================
-            CONTENTS
-        ================================= */}
+        <FoamDivider src={FOAM.pinkToBlue} />
+
         <section
           id="contents"
           className={`py-14 sm:py-20 ${SECTION_COLORS.contents.sectionBg}`}
@@ -743,14 +681,12 @@ export default function Page() {
                 <SoftCard className="overflow-hidden">
                   <div className="relative h-56 w-full">
                     <Image
-                      src="/images/pr1.jpg"
+                      src="/images/pr1.png"
                       alt="ブルワリーキーホルダー ガラポン"
                       fill
-                      sizes="(max-width: 1024px) 100vw, 50vw"
                       className="object-cover"
                     />
                   </div>
-
                   <div className="p-6">
                     <div className="text-sm font-semibold">
                       ブルワリーキーホルダー ガラポン
@@ -773,11 +709,9 @@ export default function Page() {
                       src="/images/cup.png"
                       alt="イベントグッズ販売"
                       fill
-                      sizes="(max-width: 1024px) 100vw, 50vw"
                       className="object-cover"
                     />
                   </div>
-
                   <div className="p-6">
                     <div className="text-sm font-semibold">オフィシャルグッズ販売</div>
                     <p className="mt-2 text-sm leading-relaxed text-gray-600">
@@ -795,9 +729,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ================================
-            ACCESS
-        ================================= */}
+        <FoamDivider src={FOAM.blueToWhite} />
+
         <section id="access" className="py-14 sm:py-20">
           <div className="mx-auto max-w-6xl px-6">
             <SectionHeader
@@ -811,7 +744,6 @@ export default function Page() {
                 <SoftCard className="p-7">
                   <div className="text-sm font-semibold">会場</div>
                   <p className="mt-3 text-sm leading-relaxed text-gray-600">{EVENT.venue}</p>
-
                   <div className="mt-6 text-sm font-semibold">最寄り</div>
                   <p className="mt-2 text-sm leading-relaxed text-gray-600">
                     {EVENT.accessShort}
@@ -834,13 +766,7 @@ export default function Page() {
               <Reveal delay={0.06}>
                 <SoftCard className="overflow-hidden">
                   <div className="relative h-80 w-full">
-                    <Image
-                      src="/images/pr2.jpg"
-                      alt="さんばしひろば"
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-cover"
-                    />
+                    <Image src="/images/pr2.png" alt="さんばしひろば" fill className="object-cover" />
                   </div>
                 </SoftCard>
               </Reveal>
@@ -848,9 +774,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ================================
-            NOTES
-        ================================= */}
+        <FoamDivider src={FOAM.whiteToGray} />
+
         <section id="notes" className="py-14 sm:py-20 bg-gray-50">
           <div className="mx-auto max-w-6xl px-6">
             <SectionHeader
@@ -878,9 +803,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ================================
-            FAQ
-        ================================= */}
+        <FoamDivider src={FOAM.grayToWhite} />
+
         <section id="faq" className="py-14 sm:py-20">
           <div className="mx-auto max-w-6xl px-6">
             <SectionHeader kicker="FAQ" title="よくある質問" />
@@ -898,9 +822,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ================================
-            CONTACT
-        ================================= */}
+        <FoamDivider src={FOAM.whiteToGray} />
+
         <section id="contact" className="py-14 sm:py-20 bg-gray-50">
           <div className="mx-auto max-w-6xl px-6 text-center">
             <SectionHeader
@@ -920,7 +843,8 @@ export default function Page() {
                     専用フォームよりお送りください。
                   </p>
 
-                  <a                     href="https://docs.google.com/forms/d/e/1FAIpQLSeH8nUKrjY2OYVQjGzwZb0HuAnNdvpcSuAkkvblBvz8G9KIHg/viewform?usp=dialog"
+                  <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSdYEDZ_wxC2EhMp_U1o84stQO7LFzD9uhTR1yF-UrMCITAxcg/viewform?usp=publish-editor"
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => sendGAEvent("event", "click_contact_form")}
@@ -947,9 +871,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ================================
-            FOOTER
-        ================================= */}
+        <FoamDivider src={FOAM.grayToWhite} />
+
         <footer className="border-t border-gray-200 py-10 text-center">
           <div className="mx-auto max-w-6xl px-6">
             <p className="text-xs text-gray-500">
