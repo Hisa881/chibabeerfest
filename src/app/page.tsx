@@ -272,6 +272,7 @@ function SectionHeader({
   kicker: string;
   title: string;
   desc?: string;
+  center?: boolean;
 }) {
   return (
     <div className="text-center">
