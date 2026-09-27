@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #fcefdc;
   --foreground: #171717;
 }
 
@@ -12,15 +12,33 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ========================================
+   チバビアフェスト ブランドカラー
+   黒・白・イエローの3色を基本に構成
+======================================== */
+@theme {
+  --color-yolk: #ffd23f;      /* メインイエロー */
+  --color-yolk-deep: #f5b800; /* ホバー・強調用 */
+  --color-ink: #161616;       /* 文字・線・黒セクション */
+  --color-paper: #fcefdc;     /* ベース背景(クリーム) */
+  --color-tomato: #c4331d;    /* メニュー帯(ロゴの赤に合わせたオレンジ寄りの赤) */
+  --color-plate: #f4f4ea;     /* ロゴ画像の下地 */
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ヒーロー下の流れる帯 */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 28s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
 }
